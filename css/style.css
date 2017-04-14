@@ -45,7 +45,8 @@ body {
 	color: #666;
 }
 
-#info1 .info-right {
+#info1 .info-right,
+.neko-item .info-right {
 	margin-top: 90px;
 }
 

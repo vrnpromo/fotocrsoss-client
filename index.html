@@ -6,6 +6,7 @@
 	<link rel="stylesheet" type="text/css" href="https://csshake.surge.sh/csshake.min.css">
 	<link rel="stylesheet" type="text/css" href="css/style.css">
 	<script src="https://unpkg.com/scrollreveal/dist/scrollreveal.min.js"></script>
+	<script src="https://unpkg.com/vue"></script>
 </head>
 <body>
 
@@ -23,114 +24,95 @@
     <div id="navbar" class="collapse navbar-collapse">
       <ul class="nav navbar-nav navbar-right">
         <li><a href="#showcase">Home</a></li>
-        <li><a href="#info1">About</a></li>
+        <li><a href="#content">About</a></li>
         <li><a href="#contact">Contact</a></li>
       </ul>
     </div><!--/.nav-collapse -->
   </div>
 </nav>
 
-<section id="showcase">
-	<div class="container">
-		<div class="row">
-			<div class="col-md-6 col-sm-6">
-				<div class="showcase-left shake-little">
-					<img src="img/img1.png">
-				</div>
-			</div>
-			<div class="col-md-6 col-sm-6">
-				<div class="showcase-right">
-					<h1>Some head</h1>
-					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-					tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-					quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-					consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-					cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-					proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-				</div>
-				<br/>
-				<a class="btn btn-default btn-lg showcase-btn" href="">Read more</a>
-			</div>
-		</div>
-	</div>	
-</section>
-
-<section id="testimonial">
-	<div class="container">
-		<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-		proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-		<p class="customer"> Pael S</p>
-	</div>
-</section>
-
-<section id="info1">
-	<div class="container">
-		<div class="row">
-			<div class="col-md-6 col-sm-6">
-				<div class="info-left shake-little">
-					<img src="img/img2.jpeg">
-				</div>
-			</div>
-			<div class="col-md-6 col-sm-6">
-				<div class="info-right">
-					<h2>Another head</h2>
-					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-					tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-					quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-					consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
-					cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-					proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-					<br>
-					<a class="btn btn-default btn-lg" href="">Read more</a>
-				</div>
-			</div>
-		</div>
-	</div>
-</section>
-
-<hr>
-
-<section id="info2">
-	<div class="container">
-		<div class="row">
-			<div class="col-md-6 col-sm-6">
-				<div class="info-left">
-					<h2>Info block 1</h2>
-					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-					tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-					proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-				</div>
-			</div>
-			<div class="col-md-6 col-sm-6">
-				<div class="info-right">
-					<h2>Info block 2</h2>
-					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
-					cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
-					proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-				</div>
-			</div>
-		</div>
-	</div>
-</section>
-
-<section id="contact">
-	<div class="container">
-		<div class="row">
-			<div class="col-md-5 col-sm-5">
-				<form>
-					<div class="form-group">
-						<label>Name: </label>
-						<input class="form-control" type="text" name="">
+<div id="vue-app">
+	<section id="showcase">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-6 col-sm-6">
+					<div class="showcase-left shake-little">
+						<img src="img/img1.png">
 					</div>
-					<button class="btn btn-default">Submit</button>
-				</form>
+				</div>
+				<div class="col-md-6 col-sm-6">
+					<div class="showcase-right">
+						<h1>Some head</h1>
+						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+						tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+						quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
+						consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse
+						cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+						proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+					</div>
+					<br/>
+					<a class="btn btn-default btn-lg showcase-btn" href="">Read more</a>
+				</div>
 			</div>
-			<div class="col-md-7 col-sm-7">
-				
+		</div>	
+	</section>
+
+	<section id="testimonial">
+		<div class="container">
+			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+			proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+			<p class="customer"> Pael S</p>
+		</div>
+	</section>
+	
+	<section id="content">
+		<neko-item v-for="post in posts" v-bind:img=post.img v-bind:text=post.text></neko-item>	
+	</section>
+		
+	<hr>
+
+	<section id="info2">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-6 col-sm-6">
+					<div class="info-left">
+						<h2>Info block 1</h2>
+						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+						tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
+						proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+					</div>
+				</div>
+				<div class="col-md-6 col-sm-6">
+					<div class="info-right">
+						<h2>Info block 2</h2>
+						<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod
+						cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non
+						proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+					</div>
+				</div>
 			</div>
 		</div>
-	</div>
-</section>
+	</section>
+
+	<section id="contact">
+		<div class="container">
+			<div class="row">
+				<div class="col-md-5 col-sm-5">
+					<form>
+						<div class="form-group">
+							<label>Name: </label>
+							<input class="form-control" type="text" name="">
+						</div>
+						<button class="btn btn-default">Submit</button>
+					</form>
+				</div>
+				<div class="col-md-7 col-sm-7">
+					
+				</div>
+			</div>
+		</div>
+	</section>
+</div>
 
 <footer>
 	<p class="text-center">Copyright &copy; 2017</p>
@@ -142,61 +124,8 @@
   crossorigin="anonymous"></script>
 <script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
-<script type="text/javascript">
-	window.sr=ScrollReveal();
-	sr.reveal('.navbar', {
-		duration: 2000,
-		origin: 'bottom'
-	});
-	sr.reveal('.showcase-left', {
-		duration: 2000,
-		origin: 'top',
-		distance: '300px'
-	});
-	sr.reveal('.showcase-right', {
-		duration: 2000,
-		origin: 'right',
-		distance: '300px'
-	});
-	sr.reveal('.showcase-btn', {
-		duration: 2000,
-		delay: 2000,
-		origin: 'bottom'
-	});
-	sr.reveal('#testimonial div', {
-		duration: 2000,
-		origin: 'bottom'
-	});
-	sr.reveal('.info-left', {
-		duration: 2000,
-		origin: 'left',
-		distance: '300px',
-		viewFactor: 0.2
-	});
-	sr.reveal('.info-right', {
-		duration: 2000,
-		origin: 'right',
-		distance: '300px',
-		viewFactor: 0.2
-	});
-</script>
-
-<script type="text/javascript">
-	$(function(){
-		$('a[href*="#"]:not([href="#"])').click(function(){
-			if(location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'') && location.hostname == this.hostname) {
-				var target = $(this.hash);
-				target = target.length ? target:$('[name='+this.hash.slice(1)+']');
-				if(target.length){
-					$('html,body').animate({
-						scrollTop: target.offset().top
-					}, 1000);
-					return false;
-				}
-			}
-		});
-	});
-</script>
+<script src="js/app.js"></script>
+<script src="js/ui/anim.js"></script>
 
 </body>
 </html>
