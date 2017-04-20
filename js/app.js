@@ -3,10 +3,19 @@
 		if(location.pathname.replace(/^\//,'') == this.pathname.replace(/^\//,'') && location.hostname == this.hostname) {
 			var target = $(this.hash);
 			target = target.length ? target:$('[name='+this.hash.slice(1)+']');
-			if(target.length){
-				$('html,body').animate({
-					scrollTop: target.offset().top
-				}, 1000);
+
+			if(target.length) {
+				let positionY = target.offset().top - 40;
+
+				if(positionY >= $(document).height() - $(window).height())
+					positionY -= $(window).height() - target.outerHeight() - 40;
+
+				$('html,body')
+					.stop(true)
+					.animate({
+						scrollTop: positionY
+					}, 1000, 'easeOutCubic');
+
 				return false;
 			}
 		}
