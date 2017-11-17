@@ -34,13 +34,22 @@ module.exports = function(grunt) {
 					debugging: true
 				}
 			}
-		}
+		},
+		uglify: {
+		    my_target: {
+		      files: {
+		        'scripts/app.min.js': ['scripts/app.js']
+		      }
+		    }
+		  }
 	});
 
 	grunt.loadNpmTasks('grunt-contrib-connect');
 	grunt.loadNpmTasks('grunt-contrib-watch');
 	grunt.loadNpmTasks('grunt-browserify');
+	grunt.loadNpmTasks('grunt-contrib-uglify');
 	//grunt.loadNpmTasks('main-bower-files');
 
 	grunt.registerTask('default', [ 'connect', 'watch']); //'bower'
+	grunt.registerTask('deploy', [ 'browserify', 'uglify']);
 };
