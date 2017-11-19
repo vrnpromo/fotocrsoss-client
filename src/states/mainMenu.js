@@ -8,6 +8,8 @@ export default function(phaser) {
 			phaser.load.image('gui_game_btn_over', './data/ButtonsOver.png');
 		},
 		create:()=>{
+			phaser.add.sprite(0, 0, 'bg');
+
 			let style = { font: "24px Arial", fill: "#000000", align: "center" };
 			//let btn = phaser.add.button(phaser.world.centerX - 95, phaser.world.centerY, 'gui_game_btn', ()=>{phaser.state.start('game');}, this);
 			let group = phaser.add.group();
