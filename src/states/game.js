@@ -16,12 +16,12 @@ export default function gameState(phaser) {
 
 	return {
 		preload: function () {
-			phaser.load.image('bg', './data/Background.png');//t2
+			//phaser.load.image('bg', './data/Background.png');//t2
 			phaser.load.image('bg_fot', './data/BackgroundFot.png');
 			phaser.load.image('letter_empty', './data/Letter8x8.png');
 
 			//gui
-			phaser.load.image('gui_game_btn', './data/ButtonsNormal.png');
+			//phaser.load.image('gui_game_btn', './data/ButtonsNormal.png');
 
 			phaser.load.xml('level', './data/levels/901.xml', false);
 
@@ -58,6 +58,16 @@ export default function gameState(phaser) {
 			letterCont.create((48+4)*9,0, 'letter_empty');
 			letterCont.x = 150;
 			letterCont.y = 650-110;
+
+			//this.pet.loadTexture('pet_black_hat');
+		 	// var button = game.make.button(game.world.centerX - 95, 400, 'button', removeGroup, this, 2, 1, 0);
+
+		  //   button.onInputOver.add(over, this);
+		  //   button.onInputOut.add(out, this);
+
+		  	// item.events.onInputDown.add(select);
+     //    	item.events.onInputUp.add(release);
+     //    	item.events.onInputOut.add(moveOff);
 
 			var xml = phaser.cache.getXML('level');
 
