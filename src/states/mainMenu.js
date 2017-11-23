@@ -26,6 +26,8 @@ export default function(phaser) {
 
 		  //   button.onInputOver.add(over, this);
 		  //   button.onInputOut.add(out, this);
+
+		  	phaser.state.start('game'); // for test
 		},
 		update:()=>{},
 		render:()=>{}

@@ -1,3 +1,5 @@
+import letter from './../letters/letter.js'
+
 export default function gameState(phaser) {
 	let data = {}
 
@@ -87,18 +89,21 @@ export default function gameState(phaser) {
 		    		//data[label] = 'pic'+(++count);
 		    		phaser.load.image('pic'+(++count), `./data/imgs/${img}`);
 
-		    		drawRect(pos.x, pos.y);
-		    		drawRect(pos.x2, pos.y2, '#00ff00');
-
+		    		//drawRect(pos.x, pos.y);
+		    		//drawRect(pos.x2, pos.y2, '#00ff00');
 		    		let length = label.length-1;
 		    		console.log(pos.x, pos.y, pos.x2, pos.y2, length)
+
+		    		letter.create(phaser, pos.x*32, pos.y*32, label[0]);
+		    		letter.create(phaser, pos.x2*32, pos.y2*32, label[length]);
+
 		    		if(pos.x == pos.x2){
 
 		    			while(--length)
-		    				drawRect(pos.x, pos.y < pos.y2? pos.y+length : pos.y - length, '#aa0000')
+		    				letter.create(phaser, pos.x * 32, (pos.y < pos.y2? pos.y+length : pos.y - length)*32, label[length])
 		    		}else{
 		    			while(--length)
-		    				drawRect(pos.x < pos.x2? pos.x+length : pos.x - length, pos.y, '#aa0000')
+		    				letter.create(phaser, (pos.x < pos.x2? pos.x+length : pos.x - length) * 32, pos.y*32, label[length])
 		    		}
 		    	}
 		    })

@@ -7,3 +7,4 @@ phaser.state.add('mainMenu', mainMenuState(phaser));
 phaser.state.add('game', gameState(phaser));
 
 phaser.state.start('mainMenu');
+//start(key, clearWorld, clearCache, parameter)
