@@ -19,5 +19,8 @@
     "grunt-contrib-uglify": "^3.1.0",
     "grunt-contrib-watch": "^1.0.0",
     "main-bower-files": "^2.13.1"
+  },
+  "dependencies": {
+    "axios": "^0.17.1"
   }
 }
