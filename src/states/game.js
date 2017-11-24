@@ -1,5 +1,5 @@
-import letter from './../letters/letter.js'
-import GOFactory from './../fotoCross/GOFactory'
+import GOFactory from './../fotoCross/GOFactory';
+import FadeOunIn from './../effects/fadeOutIn';
 
 export default function gameState(phaser) {
 	let data = {}
@@ -20,10 +20,9 @@ export default function gameState(phaser) {
 		create: function(){
 			phaser.add.sprite(0, 0, 'bg');
 			
-			let photoCont = phaser.add.group();
-			photoCont.create(0,0, 'bg_fot');
-			photoCont.x = 750-304;
-			photoCont.y = 70;
+			let cluePhoto = factory.photo(750 - 304, 70);
+
+			
 			//phaser.add.sprite(750-304, 0, 'bg_fot'); //304
 			
 			
@@ -84,29 +83,41 @@ export default function gameState(phaser) {
 					factory.letter(pos.x*32, pos.y*32, label[0]);
 					factory.letter(pos.x2*32, pos.y2*32, label[length]);
 					
+					let letter = null;
 					if(pos.x == pos.x2){
-						while(--length)
-							factory.letter(pos.x * 32, (pos.y < pos.y2? pos.y+length : pos.y - length)*32, label[length])
+						while(--length){
+							letter = factory.letter(pos.x * 32, (pos.y < pos.y2? pos.y+length : pos.y - length)*32, label[length]);
+							letter.wordId = count;					
+							letter.graph.onChildInputDown.add((s,l) => {
+								FadeOunIn(phaser, cluePhoto.photo, () => cluePhoto.setPhoto('pic'+s.parent.data.instance.wordId));
+								// let tween = phaser.add.tween(cluePhoto.photo).to( { alpha: 0 }, 200, Phaser.Easing.Linear.None);
+								// tween.onComplete.add(()=>{
+								// 	cluePhoto.setPhoto('pic'+s.parent.data.instance.wordId);
+								// 	phaser.add.tween(cluePhoto.photo).to( { alpha: 1 }, 200, Phaser.Easing.Linear.None, true);
+								// });
+								// tween.start();
+
+								
+							});
+						}
 					}else{
-						while(--length)
-							factory.letter((pos.x < pos.x2? pos.x+length : pos.x - length) * 32, pos.y*32, label[length])
+						while(--length){
+							letter = factory.letter((pos.x < pos.x2? pos.x+length : pos.x - length) * 32, pos.y*32, label[length])							
+							letter.wordId = count;					
+							letter.graph.onChildInputDown.add((s,l) => {
+								FadeOunIn(phaser, cluePhoto.photo, () => cluePhoto.setPhoto('pic'+s.parent.data.instance.wordId));
+							});
+						}
 					}
 				}
 			})
 			
 			phaser.load.onLoadComplete.add(()=> {
 				//var s = phaser.add.sprite(80, 0, 'pic1');
-				let s = photoCont.create(0, 0, 'pic1');
-				s.x = 4;
-				s.y = 4;
-				s.scale.setTo(0.98,0.98);
+				cluePhoto.setPhoto('pic1');
 			}, this);
 			
 			phaser.load.start();
-			
-			//s.rotation = 0.14;
-			//s.x=0;
-			//s.y=0
 		},
 		update: function(){
 			

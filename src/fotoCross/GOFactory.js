@@ -1,4 +1,5 @@
-import Letter from './../letters/letter.js'
+import Letter from './letter.js'
+import CluePhoto from './cluePhoto'
 
 export default class GOFactory{
 	constructor(phaser){
@@ -12,11 +13,17 @@ export default class GOFactory{
 		l.x = x;
 		l.y = y;
 		
-		return l;
+		return letter;
 	}
 	
-	photo(){
-		return phaser.add.sprite();
+	photo(x, y){
+		let cp = new CluePhoto();
+		cp.render(this.phaser);
+
+		cp.graph.x = x;
+		cp.graph.y = y;
+
+		return cp;
 	}
 	
 	crossword(){
