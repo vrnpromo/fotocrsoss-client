@@ -6,14 +6,14 @@ function completeHandler_obf(event)
 {
 	if (event.target != null && dict[event.target] != null)
 	{			
-		var callback : Function = dict[event.target][0];
+		var callback = dict[event.target][0];
 		if (dict[event.target][1] == null)
 		{
 			
 		}
 		
-		var error:Function = dict[event.target][1];
-		var data:Object = JSON.parse(event.target.data as String);
+		var error = dict[event.target][1];
+		var data = JSON.parse(event.target.data);
 		
 		if ( data.response.error_code)
 		{
@@ -21,7 +21,7 @@ function completeHandler_obf(event)
 			
 			if (dict[event.target][1] == null)
 			{
-				var msg:String = (data.response.error_message).toString();
+				var msg = (data.response.error_message).toString();
 				rTracer.trace( msg, rTracer.ERROR);
 			} 
 			else 
@@ -40,7 +40,7 @@ function completeHandler_obf(event)
 
 function httpStatusHandler_obf(event) 
 {
-//    rTracer.trace("httpStatusHandler: " + event);
+	//    rTracer.trace("httpStatusHandler: " + event);
 }
 
 
@@ -50,14 +50,14 @@ function _ioError(ev)
 	{
 		rTracer.trace( "ERROR => DataLoader\\_ioError: " + ev.text, rTracer.ERROR);
 		
-		var error:Function = dict[ ev.target][1];
+		var error = dict[ ev.target][1];
 		
 		if( error != null)
-			error( ev);
+		error( ev);
 		
 		delete dict[ ev.target];
 	}
-	catch ( err:Error)
+	catch ( err)
 	{
 		rTracer.trace( "ERROR => DataLoader\\_ioError: " + err.message, rTracer.ERROR);
 	}
@@ -69,14 +69,14 @@ function _secureError(ev)
 	{
 		rTracer.trace( "ERROR => DataLoader\\_secureError: " + ev.text, rTracer.ERROR);
 		
-		var error:Function = dict[ ev.target][1];
+		var error = dict[ ev.target][1];
 		
 		if( error != null)
-			error( ev);
+		error( ev);
 		
 		delete dict[ ev.target];
 	}
-	catch ( err:Error)
+	catch ( err)
 	{
 		rTracer.trace( "ERROR => DataLoader\\_secureError: " + err.message, rTracer.ERROR);
 	}
@@ -91,12 +91,12 @@ function getData_obf(method, data)
 	
 	var sigArray = []			
 	var result = '';
-
+	
 	for (var param in data)
 	{
 		var value = data[param];
 		if (!(value is String) &&
-			!(value is int))
+		!(value is int))
 		{
 			data[param] = JSON.stringify(value);									
 		}			 
@@ -107,11 +107,7 @@ function getData_obf(method, data)
 	}
 	sigArray.sort();
 	
-	for each (var s in sigArray)
-	{
-		result += s;
-	}			
-	
+	sigArray.forEach(s => result+=s);
 	
 	data.sig = MD5.encrypt( api_id + result + secret_key);			
 	data.api_id = api_id;
@@ -133,10 +129,10 @@ export default class DataLoader {
 	static RESPONSE_DATA_FORMAT = 'JSON';
 	static REQUEST_HTTP_MODE = 'POST';
 	static API_VERSION = '1.0';
-
-	static SERVER_URL:String 	= "";
-	static api_id:String 		= "";
-	static secret_key:String 	= "";
+	
+	static SERVER_URL 	= "";
+	static api_id 		= "";
+	static secret_key 	= "";
 	
 	request_obf(method, data = null, callback = null, error = null)
 	{
@@ -144,7 +140,7 @@ export default class DataLoader {
 		{
 			dict[lr] = [callback, error];
 		}
-
+		
 		if (REQUEST_HTTP_MODE == 'POST')
 		{
 			axios.post(SERVER_URL, 
@@ -175,9 +171,9 @@ export default class DataLoader {
 			});
 		}		
 		
-	    //lr.addEventListener(HTTPStatusEvent.HTTP_STATUS, httpStatusHandler_obf); // Возвращает код состояния HTTP запроса (не ошибка - просто состояние)
-
-	   	
+		//lr.addEventListener(HTTPStatusEvent.HTTP_STATUS, httpStatusHandler_obf); // Возвращает код состояния HTTP запроса (не ошибка - просто состояние)
+		
+		
 		
 		//rTracer.trace(request.data);
 		
