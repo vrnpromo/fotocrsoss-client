@@ -1,5 +1,17 @@
-export default{
-	create: function(phaser, x, y, label, asset = 'letter_empty') {
+export default class Letter{
+	let graph = null;
+	let _label = null;
+
+	constructor(label){
+		this.label = label;
+	}
+
+	set label(val) {
+		this.label = val;
+		_label.setText(this.label);
+	}
+
+	render(phaser, asset = 'letter_empty') {
 		let bmp = phaser.add.bitmapData(32, 32);
 		bmp.draw(asset, 0, 0, 32, 32);
 	 //    // draw to the canvas context like normal
@@ -14,10 +26,9 @@ export default{
 		let group = phaser.add.group();
 		//group.inputEnableChildren = true;
 		group.create(0, 0, bmp);
-	    phaser.add.text(7, 3, label, style, group);
+	   _label =  phaser.add.text(7, 3, label, style, group);
 
-	    group.x = x;
-	    group.y = y;
+	    graph = group;
 
 	    return group; //48
 	}
