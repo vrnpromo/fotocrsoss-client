@@ -1,45 +1,6 @@
-const RESPONSE_DATA_FORMAT = 'JSON';
-const REQUEST_HTTP_MODE = 'POST';
-const API_VERSION = '1.0';
-
-let SERVER_URL:String 	= "";
-let api_id:String 		= "";
-let secret_key:String 	= "";
+import axios from 'axios';
 
 let dict = {};	// Глобальная очередь запросов	
-
-let request_obf =  function(method, data = null, callback = null, error = null)
-{
-	var request:URLRequest = new URLRequest( SERVER_URL);
-	if (REQUEST_HTTP_MODE == 'POST')
-	{
-		request.method = URLRequestMethod.POST;
-	} 
-	else 
-	{
-		request.method = URLRequestMethod.GET;
-	}		
-	
-	request.data = getData_obf(method,data);
-	
-	var lr:URLLoader = new URLLoader();
-	lr.addEventListener(Event.COMPLETE, completeHandler_obf);
-	
-    lr.addEventListener(HTTPStatusEvent.HTTP_STATUS, httpStatusHandler_obf); // Возвращает код состояния HTTP запроса (не ошибка - просто состояние)
-	
-	lr.addEventListener(IOErrorEvent.IO_ERROR, 				this._ioError);
-	lr.addEventListener(SecurityErrorEvent.SECURITY_ERROR, 	this._secureError);
-
-
-   	if (callback !== null)
-	{
-		dict[lr] = [callback, error];
-	}
-	
-	//rTracer.trace(request.data);
-	
-	lr.load(request);
-}
 
 function completeHandler_obf(event) 
 {
@@ -168,4 +129,58 @@ function getData_obf(method, data)
 	return str.slice(0, str.length - 1);
 }	
 
-export default {}
+export default class DataLoader {
+	static RESPONSE_DATA_FORMAT = 'JSON';
+	static REQUEST_HTTP_MODE = 'POST';
+	static API_VERSION = '1.0';
+
+	static SERVER_URL:String 	= "";
+	static api_id:String 		= "";
+	static secret_key:String 	= "";
+	
+	request_obf(method, data = null, callback = null, error = null)
+	{
+		if (callback !== null)
+		{
+			dict[lr] = [callback, error];
+		}
+
+		if (REQUEST_HTTP_MODE == 'POST')
+		{
+			axios.post(SERVER_URL, 
+				getData_obf(method,data)
+			)
+			.then(function (response) {
+				console.log(response);
+			})
+			.catch(function (error) {
+				console.log(error);
+				//lr.addEventListener(IOErrorEvent.IO_ERROR, 				this._ioError);
+				//lr.addEventListener(SecurityErrorEvent.SECURITY_ERROR, 	this._secureError);
+			});
+		} 
+		else 
+		{
+			axios.get(SERVER_URL, {
+				params: getData_obf(method,data)
+			})
+			.then(function (response) {
+				//lr.addEventListener(Event.COMPLETE, completeHandler_obf); 
+				//console.log(response);
+			})
+			.catch(function (error) {
+				console.log(error);
+				//lr.addEventListener(IOErrorEvent.IO_ERROR, 				this._ioError);
+				//lr.addEventListener(SecurityErrorEvent.SECURITY_ERROR, 	this._secureError);
+			});
+		}		
+		
+	    //lr.addEventListener(HTTPStatusEvent.HTTP_STATUS, httpStatusHandler_obf); // Возвращает код состояния HTTP запроса (не ошибка - просто состояние)
+
+	   	
+		
+		//rTracer.trace(request.data);
+		
+		//lr.load(request);
+	}
+}
