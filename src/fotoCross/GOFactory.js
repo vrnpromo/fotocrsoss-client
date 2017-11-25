@@ -1,4 +1,5 @@
-import Letter from './letter.js'
+import Letter from './letter'
+import LetterPalette from './letterPalette'
 import CluePhoto from './cluePhoto'
 
 export default class GOFactory{
@@ -14,6 +15,14 @@ export default class GOFactory{
 		l.y = y;
 		
 		return letter;
+	}
+
+	letterPalette(x, y, columnNum, rowNum){
+		let lp = new LetterPalette(columnNum, rowNum);
+		let graph = lp.render(this.phaser);
+
+		graph.x = x;
+		graph.y = y;
 	}
 	
 	photo(x, y){

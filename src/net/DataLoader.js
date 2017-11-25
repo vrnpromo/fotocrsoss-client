@@ -1,6 +1,15 @@
 import axios from 'axios';
 import MD5 from './MD5';
 
+var instance = axios.create({
+	//baseURL: 'https://some-domain.com/api/',
+	timeout: 1000,
+	headers: {
+		'Content-Type': 'application/x-www-form-urlencoded',
+		'Accept': 'text/json'
+	}
+});
+
 function completeHandler_obf(event, callback, error) 
 {
 		var data = JSON.parse(event.data);
@@ -129,7 +138,7 @@ export default class DataLoader {
 		
 		if (DataLoader.REQUEST_HTTP_MODE == 'POST')
 		{
-			axios.post(DataLoader.SERVER_URL, 
+			instance.post(DataLoader.SERVER_URL,
 				getData_obf(method, data)
 			)
 			.then(function (response) {
@@ -145,6 +154,9 @@ export default class DataLoader {
 		else 
 		{
 			axios.get(DataLoader.SERVER_URL, {
+				headers: {
+					'Access-Control-Allow-Origin': '*',
+				  },
 				params: getData_obf(method, data)
 			})
 			.then(function (response) {

@@ -20,11 +20,7 @@ export default function gameState(phaser) {
 		create: function(){
 			phaser.add.sprite(0, 0, 'bg');
 			
-			let cluePhoto = factory.photo(750 - 304, 70);
-
-			
-			//phaser.add.sprite(750-304, 0, 'bg_fot'); //304
-			
+			let cluePhoto = factory.photo(750 - 304, 70);		
 			
 			let btnCont = phaser.add.group();
 			btnCont.create(0,0, 'gui_game_btn');
@@ -35,19 +31,7 @@ export default function gameState(phaser) {
 			btnCont.y = 70 + 304 + 14;
 			btnCont.scale.setTo(0.72, 0.72);
 			
-			let letterCont = phaser.add.group();
-			letterCont.create(0,0, 'letter_empty');
-			letterCont.create(48+4,0, 'letter_empty');
-			letterCont.create((48+4)*2,0, 'letter_empty');
-			letterCont.create((48+4)*3,0, 'letter_empty');
-			letterCont.create((48+4)*4,0, 'letter_empty');
-			letterCont.create((48+4)*5,0, 'letter_empty');
-			letterCont.create((48+4)*6,0, 'letter_empty');
-			letterCont.create((48+4)*7,0, 'letter_empty');
-			letterCont.create((48+4)*8,0, 'letter_empty');
-			letterCont.create((48+4)*9,0, 'letter_empty');
-			letterCont.x = 150;
-			letterCont.y = 650-110;
+			factory.letterPalette(150, 650 - 140, 10, 2);
 			
 			//this.pet.loadTexture('pet_black_hat');
 			// var button = game.make.button(game.world.centerX - 95, 400, 'button', removeGroup, this, 2, 1, 0);
