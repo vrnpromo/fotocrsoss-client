@@ -63,7 +63,7 @@ export default function gameState(phaser) {
 			
 			let count=0;
 			xml.querySelectorAll('crossword>word').forEach(word=>{
-				console.log(word);
+				//console.log(word);
 				let img = word.querySelector('image1').textContent;
 				let label = word.querySelector('word').textContent;
 				let pos = {
@@ -78,7 +78,7 @@ export default function gameState(phaser) {
 					phaser.load.image('pic'+(++count), `./data/imgs/${img}`);
 					
 					let length = label.length-1;
-					console.log(pos.x, pos.y, pos.x2, pos.y2, length)
+					//console.log(pos.x, pos.y, pos.x2, pos.y2, length)
 					
 					factory.letter(pos.x*32, pos.y*32, label[0]);
 					factory.letter(pos.x2*32, pos.y2*32, label[length]);

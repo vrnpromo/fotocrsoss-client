@@ -1,41 +1,28 @@
 import axios from 'axios';
+import MD5 from './MD5';
 
-let dict = {};	// Глобальная очередь запросов	
-
-function completeHandler_obf(event) 
+function completeHandler_obf(event, callback, error) 
 {
-	if (event.target != null && dict[event.target] != null)
-	{			
-		var callback = dict[event.target][0];
-		if (dict[event.target][1] == null)
-		{
-			
-		}
-		
-		var error = dict[event.target][1];
-		var data = JSON.parse(event.target.data);
+		var data = JSON.parse(event.data);
 		
 		if ( data.response.error_code)
 		{
-			rTracer.trace( "ERROR => DataLoader\\completeHandler_obf: " + data.response.error_code + " => " + data.response.error_message, rTracer.ERROR);
+			//rTracer.trace( "ERROR => DataLoader\\completeHandler_obf: " + data.response.error_code + " => " + data.response.error_message, rTracer.ERROR);
 			
-			if (dict[event.target][1] == null)
-			{
-				var msg = (data.response.error_message).toString();
-				rTracer.trace( msg, rTracer.ERROR);
-			} 
-			else 
-			{
-				error(data.response);
-			};
-			delete dict[event.target];
+			// if (dict[event.target][1] == null)
+			// {
+			// 	var msg = (data.response.error_message).toString();
+			// 	//rTracer.trace( msg, rTracer.ERROR);
+			// } 
+			// else 
+			// {
+			// 	error(data.response);
+			// };
 		} 
 		else 
 		{
-			delete dict[event.target];
 			callback(data.response);
 		}
-	}
 }
 
 function httpStatusHandler_obf(event) 
@@ -85,9 +72,9 @@ function _secureError(ev)
 function getData_obf(method, data)
 {
 	data.method 	= method;
-	data.format 	= RESPONSE_DATA_FORMAT;			
-	data.api_server = SERVER_URL; 
-	data.v 			= API_VERSION;
+	data.format 	= DataLoader.RESPONSE_DATA_FORMAT;			
+	data.api_server = DataLoader.SERVER_URL; 
+	data.v 			= DataLoader.API_VERSION;
 	
 	var sigArray = []			
 	var result = '';
@@ -95,8 +82,8 @@ function getData_obf(method, data)
 	for (var param in data)
 	{
 		var value = data[param];
-		if (!(value is String) &&
-		!(value is int))
+		let type = typeof value;
+		if (!(type = 'string') && !(Number.isInteger(value)))
 		{
 			data[param] = JSON.stringify(value);									
 		}			 
@@ -109,12 +96,10 @@ function getData_obf(method, data)
 	
 	sigArray.forEach(s => result+=s);
 	
-	data.sig = MD5.encrypt( api_id + result + secret_key);			
-	data.api_id = api_id;
+	data.sig = MD5.encrypt( DataLoader.api_id + result + DataLoader.secret_key);			
+	data.api_id = DataLoader.api_id;
 	data.timestamp = Number( new Date().time);
 	data.random = Math.abs( Math.round(Math.random() * 1000) - 500);	
-	
-	
 	
 	var str = '';
 	for (var v in data)
@@ -126,28 +111,30 @@ function getData_obf(method, data)
 }	
 
 export default class DataLoader {
-	static RESPONSE_DATA_FORMAT = 'JSON';
-	static REQUEST_HTTP_MODE = 'POST';
-	static API_VERSION = '1.0';
+	static get RESPONSE_DATA_FORMAT(){ return 'JSON'};
+	static get REQUEST_HTTP_MODE() {return 'POST'};
+	static get API_VERSION(){return '1.0'};
 	
-	static SERVER_URL 	= "";
-	static api_id 		= "";
-	static secret_key 	= "";
+	static get SERVER_URL() {return "https://maganza.ru/fsnew/vk/htdocs/index.php"}
+	static get api_id(){return "3226070"}
+	static get secret_key() {return "zyn1WEQdzV92jTYqDevK"}
+
+	//public const VKServer:String 	= 'http://46.4.95.181/fotocrossword/ok/api.php';
+	//public const VKSecret:String 	= 'F6F24DDD8B1602C25CD44455';	// Секретный ключ приложения
+	
+	//public const VKPublic:String 	= 'CBANIQFMABABABABA';			// Публичный ключ приложения
 	
 	request_obf(method, data = null, callback = null, error = null)
 	{
-		if (callback !== null)
-		{
-			dict[lr] = [callback, error];
-		}
 		
-		if (REQUEST_HTTP_MODE == 'POST')
+		if (DataLoader.REQUEST_HTTP_MODE == 'POST')
 		{
-			axios.post(SERVER_URL, 
-				getData_obf(method,data)
+			axios.post(DataLoader.SERVER_URL, 
+				getData_obf(method, data)
 			)
 			.then(function (response) {
 				console.log(response);
+				completeHandler_obf(response, callback, error);
 			})
 			.catch(function (error) {
 				console.log(error);
@@ -157,12 +144,13 @@ export default class DataLoader {
 		} 
 		else 
 		{
-			axios.get(SERVER_URL, {
-				params: getData_obf(method,data)
+			axios.get(DataLoader.SERVER_URL, {
+				params: getData_obf(method, data)
 			})
 			.then(function (response) {
 				//lr.addEventListener(Event.COMPLETE, completeHandler_obf); 
 				//console.log(response);
+				completeHandler_obf(response, callback, error);
 			})
 			.catch(function (error) {
 				console.log(error);

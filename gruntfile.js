@@ -10,12 +10,12 @@ module.exports = function(grunt) {
 					transform: [['babelify', {presets: ["es2015"]} ]] //{presets: ["stage-1", "es2015"]}
 				},
 				src: 'src/app.js',
-				dest: 'scripts/app.js'
+				dest: 'scripts/app.min.js'
 			}
 		},
 		watch: {
 			files: [ 'src/**/*.js' ],
-			tasks: ['browserify', 'uglify'],
+			tasks: ['browserify'],
 			options: {
 				spawn: false,
 			},
