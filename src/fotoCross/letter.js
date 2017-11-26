@@ -12,6 +12,9 @@ export default class Letter{
 	}
 	
 	set text(val) {
+		if(this.state == 'block')
+			return;
+			
 		this.label = val.toUpperCase();
 		this._label.setText(this.label);
 	}

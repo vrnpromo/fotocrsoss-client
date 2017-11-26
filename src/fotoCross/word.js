@@ -45,10 +45,22 @@ export default class Word{
             nextLetter._palette = letterFromPalette;
             this.textArr[index] = letter;
 
-            return true;
+            return nextLetter;
         }
 
         return false;
+    }
+
+    fillAt(index, letter){
+        this.graph.children[index].data.instance.text = letter;
+        this.textArr[index] = letter;
+    }
+
+    free(){
+        this.graph.children.forEach(letter => {
+            letter.data.instance.setState('default');
+            letter.data.instance.text = '';
+        });
     }
 
     isFilled(){

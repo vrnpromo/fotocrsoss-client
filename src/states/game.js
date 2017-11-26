@@ -71,7 +71,8 @@ export default function gameState(phaser) {
 				phaser.load.image('pic'+(++count), `./data/imgs/${w.img}`);
 			});
 
-			let crossword = factory.crossword(parsedLevel);
+			let cw = factory.crossword(parsedLevel);
+			let crossword = cw.graph;
 			crossword.x = crossword.y = 16;
 			//add mouseDown event handler (phaser way)
 			crossword.children.forEach(wordGr => {
@@ -91,8 +92,9 @@ export default function gameState(phaser) {
 							return;
 						}
 
-						if(selectedWord)
-							selectedWord.setState('default');
+						if(selectedWord){
+							selectedWord.free();
+						}
 						
 						selectedWord = targetWord;
 						selectedWord.setState('over');
@@ -109,12 +111,28 @@ export default function gameState(phaser) {
 
 			letterPalette.graph.children.forEach(letter => {
 				letter.onChildInputDown.add((s,l) => {
-					if(selectedWord.fill(letter.data.instance.label, letter.data.instance)){
+					let nextLetter = selectedWord.fill(letter.data.instance.label, letter.data.instance);
+					if(nextLetter){
+						let cross = cw.map[(nextLetter.graph.parent.x + nextLetter.graph.x) / 32][(nextLetter.graph.parent.y + nextLetter.graph.y) / 32];
+						//console.log(cross);
+
 						letter.data.instance.hide();
 					}
 
 					if(selectedWord.isFilled() && selectedWord.isCorrect()){
 						selectedWord.setState('block');
+
+						for(let i=0; i< selectedWord.text.length; i++){
+							let cross = cw.map[selectedWord.graph.x / 32 + i*selectedWord.direction][selectedWord.graph.y / 32 + i*(!selectedWord.direction)];
+							let orig = cross.find(letter => {return letter.parent.data.instance.id == selectedWord.id});
+
+							cross.forEach(letter => {
+								if(letter.parent.data.instance.id!=selectedWord.id){
+									letter.parent.data.instance.fillAt(letter.data.instance.id, orig.data.instance.label);
+									letter.data.instance.setState('block');
+								}
+							})
+						}
 					}
 				});
 			});
