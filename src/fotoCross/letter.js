@@ -1,14 +1,16 @@
 import App from './../app'
 
 export default class Letter{
-	constructor(label = '') {
+	constructor(label = '', prefix='') {
 		this.label = label; // string
+		this.prefix = prefix;
 		this.state = 'default';
 		
 		this.id = null;
 		this.graph = null // pointer to phaser.group
 		this._palette = null;
 		this._label = null // pointer to phaser.text
+		this._prefix = null;
 	}
 	
 	set text(val) {
@@ -24,19 +26,31 @@ export default class Letter{
 		bmp.draw(asset, 0, 0, 32, 32);
 		
 		let style = { font: "24px Arial", fill: "#000000", align: "center" };
-		//let btn = phaser.add.button(phaser.world.centerX - 95, phaser.world.centerY, 'gui_game_btn', ()=>{phaser.state.start('game');}, this);
 		let group = App.phaser.add.group();
-		group.inputEnableChildren = true;
+		//group.inputEnableChildren = true;
 		let sprite = group.create(0, 0, bmp);
+		sprite.inputEnabled = true;
 		sprite.input.useHandCursor = true;
 		
-		this._label =  App.phaser.add.text(7, 3, this.label, style, group);
+		this._label =  App.phaser.add.text(6, 3, this.label, style, group);
+		if(this.prefix != '')
+			this._prefix = App.phaser.add.text(1, 1, this.prefix, { font: "12px Arial", fill: "#000000", align: "center" }, group);
+		
 		this.graph = group;
 		
 		group.data = {instance: this};
 		this._label.inputEnabled = false;
 		
 		return group; //48
+	}
+
+	setPrefix(prefix){
+		this.prefix = prefix;
+
+		if(!this._prefix)
+			this._prefix = App.phaser.add.text(2, 0, this.prefix, { font: "12px Arial", fill: "#000000", align: "center" }, this.graph);
+		else
+			this._prefix.setText(this.prefix);
 	}
 
 	hide(){
