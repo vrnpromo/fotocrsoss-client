@@ -77,13 +77,28 @@ export default function gameState(phaser) {
 			crossword.children.forEach(wordGr => {
 				wordGr.children.forEach(letterGr =>{
 					letterGr.onChildInputDown.add((s,l) => {
+						let targetWord = s.parent.parent.data.instance;
+
+						if(selectedWord==targetWord){
+							let letter = s.parent.data.instance;
+
+							if(letter.label.length == 0 || letter.state == 'block')
+								return;
+
+							letter.text = '';
+							letter._palette.show();
+
+							return;
+						}
+
 						if(selectedWord)
 							selectedWord.setState('default');
-
-						selectedWord = s.parent.parent.data.instance;
+						
+						selectedWord = targetWord;
 						selectedWord.setState('over');
 						crossword.bringToTop(selectedWord.graph);
 						letterPalette.generate(selectedWord.text);
+						console.log(selectedWord.text);
 
 						FadeOunIn(App.phaser, cluePhoto.photo, () => cluePhoto.setPhoto('pic'+selectedWord.id));
 					});
@@ -92,12 +107,26 @@ export default function gameState(phaser) {
 
 			let letterPalette = factory.letterPalette(150, 650 - 140, 10, 2);
 
+			letterPalette.graph.children.forEach(letter => {
+				letter.onChildInputDown.add((s,l) => {
+					if(selectedWord.fill(letter.data.instance.label, letter.data.instance)){
+						letter.data.instance.hide();
+					}
+
+					if(selectedWord.isFilled() && selectedWord.isCorrect()){
+						selectedWord.setState('block');
+					}
+				});
+			});
+
 			phaser.load.onLoadComplete.add(()=> {
 				selectedWord = crossword.children[0].data.instance;
 				selectedWord.setState('over');
 				crossword.bringToTop(selectedWord.graph);
 				letterPalette.generate(selectedWord.text);
 				cluePhoto.setPhoto('pic'+selectedWord.id);
+
+				console.log(selectedWord.text);
 			}, this);
 			
 			phaser.load.start();

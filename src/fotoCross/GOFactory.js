@@ -8,7 +8,7 @@ export default class GOFactory{
 		this.phaser = phaser;
 	}
 	
-	letter(x, y, label){
+	letter(x, y, label = ''){
 		let letter = new Letter(label);
 		let l = letter.render();
 		

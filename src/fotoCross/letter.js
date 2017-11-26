@@ -1,11 +1,13 @@
 import App from './../app'
 
 export default class Letter{
-	constructor(label) {
+	constructor(label = '') {
 		this.label = label; // string
 		this.state = 'default';
 		
+		this.id = null;
 		this.graph = null // pointer to phaser.group
+		this._palette = null;
 		this._label = null // pointer to phaser.text
 	}
 	
@@ -34,17 +36,35 @@ export default class Letter{
 		return group; //48
 	}
 
+	hide(){
+		this.graph.visible = false;
+	}
+
+	show(){
+		this.graph.visible = true;
+	}
+
 	setState(state){
+		if(this.state == 'block')
+			return;
+
 		let key;
+		let sprite = this.graph.children[0];
 
 		switch(state){
 			case 'default': key='letter_empty'; break;
 			case 'over': key='letter_over'; break;
-			case 'block': key='letter_block'; break;
+			case 'block': 
+				key='letter_block'; 
+				//sprite.inputEnabled = false;
+				//sprite.input.useHandCursor = false;
+				break;
 		}
 
 		let bmd = App.phaser.add.bitmapData(32, 32);
 		bmd.draw(key, 0, 0, 32, 32);
-		this.graph.children[0].setTexture(bmd.texture);
+		sprite.setTexture(bmd.texture);
+
+		this.state = state;
 	}
 }

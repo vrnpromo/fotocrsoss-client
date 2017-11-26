@@ -38,6 +38,7 @@ export default class LetterPalette{
 
         this.graph.children.forEach((letter, i) => {
             letter.data.instance.text = letters.splice(Math.floor(Math.random()*letters.length), 1)[0]; //shuffle
+            letter.data.instance.show();
         })
     }
 }
