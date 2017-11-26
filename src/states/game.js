@@ -51,9 +51,10 @@ export default function gameState(phaser) {
 			
 			let parsedLevel = [];
 			let count = 0;
-			xml.querySelectorAll('crossword>word').forEach(word => {
+			xml.querySelectorAll('crossword>word').forEach((word, i) => {
 				//console.log(word);
 				let w = {
+					id: i+1,
 					img: word.querySelector('image1').textContent,
 					text: word.querySelector('word').textContent,
 					pos: {
@@ -84,7 +85,7 @@ export default function gameState(phaser) {
 						crossword.bringToTop(selectedWord.graph);
 						letterPalette.generate(selectedWord.text);
 
-						FadeOunIn(App.phaser, cluePhoto.photo, () => cluePhoto.setPhoto('pic'+s.parent.data.instance.wordId));
+						FadeOunIn(App.phaser, cluePhoto.photo, () => cluePhoto.setPhoto('pic'+selectedWord.id));
 					});
 				});
 			});
@@ -92,10 +93,11 @@ export default function gameState(phaser) {
 			let letterPalette = factory.letterPalette(150, 650 - 140, 10, 2);
 
 			phaser.load.onLoadComplete.add(()=> {
-				cluePhoto.setPhoto('pic1');
 				selectedWord = crossword.children[0].data.instance;
 				selectedWord.setState('over');
 				crossword.bringToTop(selectedWord.graph);
+				letterPalette.generate(selectedWord.text);
+				cluePhoto.setPhoto('pic'+selectedWord.id);
 			}, this);
 			
 			phaser.load.start();

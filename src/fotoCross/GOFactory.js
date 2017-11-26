@@ -45,6 +45,7 @@ export default class GOFactory{
 			let w = new Word(word.text, word.direction);
 			cont.add(w.render(this.phaser));
 
+			w.id = word.id;
 			w.graph.x = word.pos.x * 32;
 			w.graph.y = word.pos.y * 32;
 		});

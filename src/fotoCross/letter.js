@@ -5,7 +5,6 @@ export default class Letter{
 		this.label = label; // string
 		this.state = 'default';
 		
-		this.wordId = null;
 		this.graph = null // pointer to phaser.group
 		this._label = null // pointer to phaser.text
 	}
