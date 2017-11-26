@@ -1,9 +1,11 @@
+import App from './../app'
 import GOFactory from './../fotoCross/GOFactory';
 import FadeOunIn from './../effects/fadeOutIn';
 
 export default function gameState(phaser) {
 	let data = {}
 	let factory = new GOFactory(phaser);
+	App.factory = factory;
 	
 	return {
 		preload: function () {
@@ -45,57 +47,38 @@ export default function gameState(phaser) {
 			
 			var xml = phaser.cache.getXML('level');
 			
-			let count=0;
-			xml.querySelectorAll('crossword>word').forEach(word=>{
+			let parsedLevel = [];
+			let count = 0;
+			xml.querySelectorAll('crossword>word').forEach(word => {
 				//console.log(word);
-				let img = word.querySelector('image1').textContent;
-				let label = word.querySelector('word').textContent;
-				let pos = {
-					x: parseInt(word.querySelector('xp1').textContent) + 1,
-					y: parseInt(word.querySelector('yp1').textContent) + 1,
-					x2: parseInt(word.querySelector('xp2').textContent) + 1,
-					y2: parseInt(word.querySelector('yp2').textContent) + 1
-				}
-				
-				if(img && label){
-					//data[label] = 'pic'+(++count);
-					phaser.load.image('pic'+(++count), `./data/imgs/${img}`);
-					
-					let length = label.length-1;
-					//console.log(pos.x, pos.y, pos.x2, pos.y2, length)
-					
-					factory.letter(pos.x*32, pos.y*32, label[0]);
-					factory.letter(pos.x2*32, pos.y2*32, label[length]);
-					
-					let letter = null;
-					if(pos.x == pos.x2){
-						while(--length){
-							letter = factory.letter(pos.x * 32, (pos.y < pos.y2? pos.y+length : pos.y - length)*32, label[length]);
-							letter.wordId = count;					
-							letter.graph.onChildInputDown.add((s,l) => {
-								FadeOunIn(phaser, cluePhoto.photo, () => cluePhoto.setPhoto('pic'+s.parent.data.instance.wordId));
-								// let tween = phaser.add.tween(cluePhoto.photo).to( { alpha: 0 }, 200, Phaser.Easing.Linear.None);
-								// tween.onComplete.add(()=>{
-								// 	cluePhoto.setPhoto('pic'+s.parent.data.instance.wordId);
-								// 	phaser.add.tween(cluePhoto.photo).to( { alpha: 1 }, 200, Phaser.Easing.Linear.None, true);
-								// });
-								// tween.start();
-
-								
-							});
-						}
-					}else{
-						while(--length){
-							letter = factory.letter((pos.x < pos.x2? pos.x+length : pos.x - length) * 32, pos.y*32, label[length])							
-							letter.wordId = count;					
-							letter.graph.onChildInputDown.add((s,l) => {
-								FadeOunIn(phaser, cluePhoto.photo, () => cluePhoto.setPhoto('pic'+s.parent.data.instance.wordId));
-							});
-						}
+				let w = {
+					img: word.querySelector('image1').textContent,
+					text: word.querySelector('word').textContent,
+					pos: {
+						x: parseInt(word.querySelector('xp1').textContent),
+						y: parseInt(word.querySelector('yp1').textContent),
+						x2: parseInt(word.querySelector('xp2').textContent),
+						y2: parseInt(word.querySelector('yp2').textContent)
 					}
 				}
+
+				w.direction = (w.pos.x == w.pos.x2 ? 0 : 1); // 0 - horizontal, 1 - vertical
+				
+				parsedLevel.push(w);
+				phaser.load.image('pic'+(++count), `./data/imgs/${w.img}`);
+			});
+
+			let crossword = factory.crossword(parsedLevel);
+			crossword.x = crossword.y = 16;
+			//add mouseDown event handler (phaser way)
+			crossword.children.forEach(wordGr => {
+				wordGr.children.forEach(letterGr =>{
+					letterGr.onChildInputDown.add((s,l) => {
+						FadeOunIn(App.phaser, cluePhoto.photo, () => cluePhoto.setPhoto('pic'+s.parent.data.instance.wordId));
+					});
+				});
 			})
-			
+
 			phaser.load.onLoadComplete.add(()=> {
 				//var s = phaser.add.sprite(80, 0, 'pic1');
 				cluePhoto.setPhoto('pic1');

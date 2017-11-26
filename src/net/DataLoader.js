@@ -10,11 +10,9 @@ var instance = axios.create({
 	}
 });
 
-function completeHandler_obf(event, callback, error) 
+function completeHandler_obf(res, callback, error) 
 {
-		var data = JSON.parse(event.data);
-		
-		if ( data.response.error_code)
+		if (res.error)
 		{
 			//rTracer.trace( "ERROR => DataLoader\\completeHandler_obf: " + data.response.error_code + " => " + data.response.error_message, rTracer.ERROR);
 			
@@ -30,7 +28,7 @@ function completeHandler_obf(event, callback, error)
 		} 
 		else 
 		{
-			callback(data.response);
+			callback(res.data);
 		}
 }
 
@@ -107,7 +105,7 @@ function getData_obf(method, data)
 	
 	data.sig = MD5.encrypt( DataLoader.api_id + result + DataLoader.secret_key);			
 	data.api_id = DataLoader.api_id;
-	data.timestamp = Number( new Date().time);
+	data.timestamp = Date.now();
 	data.random = Math.abs( Math.round(Math.random() * 1000) - 500);	
 	
 	var str = '';
@@ -138,11 +136,12 @@ export default class DataLoader {
 		
 		if (DataLoader.REQUEST_HTTP_MODE == 'POST')
 		{
+			
 			instance.post(DataLoader.SERVER_URL,
 				getData_obf(method, data)
 			)
 			.then(function (response) {
-				console.log(response);
+				//console.log(response);
 				completeHandler_obf(response, callback, error);
 			})
 			.catch(function (error) {

@@ -1,4 +1,5 @@
 import Letter from './letter'
+import Word from './word'
 import LetterPalette from './letterPalette'
 import CluePhoto from './cluePhoto'
 
@@ -35,7 +36,17 @@ export default class GOFactory{
 		return cp;
 	}
 	
-	crossword(){
-		return phaser.add.sprite();
+	crossword(words){
+		let cont = this.phaser.add.group();
+
+		words.forEach(word => {
+			let w = new Word(word.text, word.direction);
+			cont.add(w.render(this.phaser));
+
+			w.graph.x = word.pos.x * 32;
+			w.graph.y = word.pos.y * 32;
+		});
+
+		return cont;
 	}
 }
