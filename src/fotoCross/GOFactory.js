@@ -10,7 +10,7 @@ export default class GOFactory{
 	
 	letter(x, y, label){
 		let letter = new Letter(label);
-		let l = letter.render(this.phaser);
+		let l = letter.render();
 		
 		l.x = x;
 		l.y = y;
@@ -24,6 +24,8 @@ export default class GOFactory{
 
 		graph.x = x;
 		graph.y = y;
+
+		return lp;
 	}
 	
 	photo(x, y){

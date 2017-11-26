@@ -4,7 +4,7 @@ import FadeOunIn from './../effects/fadeOutIn';
 export default class Word{
     constructor(text, direction = 0){
         this.text = text;
-        this.direction = direction; // 0 - horizontal, 1 - vertical
+        this.direction = direction; // 0 - vertical, 1 - horizontal
         this.graph = null;
     }
 
@@ -19,7 +19,14 @@ export default class Word{
             cont.add(letter.graph);
         }
 
+        cont.data = {instance: this};
         this.graph = cont;
         return cont;
     }
+
+    setState(state){
+		this.graph.children.forEach(letter => {
+            letter.data.instance.setState(state);
+        })
+	}
 }

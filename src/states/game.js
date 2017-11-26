@@ -3,7 +3,10 @@ import GOFactory from './../fotoCross/GOFactory';
 import FadeOunIn from './../effects/fadeOutIn';
 
 export default function gameState(phaser) {
-	let data = {}
+	let selectedWord = null;
+
+	let data = {};
+
 	let factory = new GOFactory(phaser);
 	App.factory = factory;
 	
@@ -12,7 +15,8 @@ export default function gameState(phaser) {
 			//phaser.load.image('bg', './data/Background.png');//t2
 			phaser.load.image('bg_fot', './data/BackgroundFot.png');
 			phaser.load.image('letter_empty', './data/Letter8x8.png');
-			
+			phaser.load.image('letter_over', './data/Letter8x8selected.png');
+			phaser.load.image('letter_block', './data/Letter8x8blocked.png');
 			//gui
 			//phaser.load.image('gui_game_btn', './data/ButtonsNormal.png');
 			
@@ -32,9 +36,7 @@ export default function gameState(phaser) {
 			btnCont.x = 750-304;
 			btnCont.y = 70 + 304 + 14;
 			btnCont.scale.setTo(0.72, 0.72);
-			
-			factory.letterPalette(150, 650 - 140, 10, 2);
-			
+						
 			//this.pet.loadTexture('pet_black_hat');
 			// var button = game.make.button(game.world.centerX - 95, 400, 'button', removeGroup, this, 2, 1, 0);
 			
@@ -62,7 +64,7 @@ export default function gameState(phaser) {
 					}
 				}
 
-				w.direction = (w.pos.x == w.pos.x2 ? 0 : 1); // 0 - horizontal, 1 - vertical
+				w.direction = (w.pos.x == w.pos.x2 ? 0 : 1); // 0 - vertical, 1 - horizontal
 				
 				parsedLevel.push(w);
 				phaser.load.image('pic'+(++count), `./data/imgs/${w.img}`);
@@ -74,23 +76,35 @@ export default function gameState(phaser) {
 			crossword.children.forEach(wordGr => {
 				wordGr.children.forEach(letterGr =>{
 					letterGr.onChildInputDown.add((s,l) => {
+						if(selectedWord)
+							selectedWord.setState('default');
+
+						selectedWord = s.parent.parent.data.instance;
+						selectedWord.setState('over');
+						crossword.bringToTop(selectedWord.graph);
+						letterPalette.generate(selectedWord.text);
+
 						FadeOunIn(App.phaser, cluePhoto.photo, () => cluePhoto.setPhoto('pic'+s.parent.data.instance.wordId));
 					});
 				});
-			})
+			});
+
+			let letterPalette = factory.letterPalette(150, 650 - 140, 10, 2);
 
 			phaser.load.onLoadComplete.add(()=> {
-				//var s = phaser.add.sprite(80, 0, 'pic1');
 				cluePhoto.setPhoto('pic1');
+				selectedWord = crossword.children[0].data.instance;
+				selectedWord.setState('over');
+				crossword.bringToTop(selectedWord.graph);
 			}, this);
 			
 			phaser.load.start();
 		},
 		update: function(){
-			
+
 		},
 		render: function(){
-			//phaser.debug.text('BIBA BIBA BIBA', 360, 96, 'rgb(255,0,0)');
+
 		}
 	}
 }
