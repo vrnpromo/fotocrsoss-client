@@ -58,13 +58,14 @@ export default class Word{
 
     free(){
         this.graph.children.forEach(letter => {
-            letter.data.instance.setState('default');
-            letter.data.instance.text = '';
+            let ld = letter.data.instance;
+            ld.setState('default');
+            this.fillAt(ld.id, '');
         });
     }
 
     isFilled(){
-        return this.textArr.length == this.text.length;
+        return this.textArr.join('').length == this.text.length;
     }
 
     isCorrect(){

@@ -1,5 +1,6 @@
 import { App } from "../app";
 import { SelectLevelBtn } from "../gui/selectLevelBtn";
+import { Btn } from "../gui/btn";
 
 export default function() {
 	let stages;
@@ -56,6 +57,18 @@ export default function() {
 			updateStages(App.storage.generalData);
 			App.storage.onGeneralData.addOnce(updateStages);
 
+
+			let saleBtn = new Btn(120, 60, 'Акция', ()=>{});
+			saleBtn.graph.x = 4;
+			saleBtn.graph.y = 4;
+
+			let faqBtn = new Btn(100, 50, 'Правила игры');
+			faqBtn.graph.x = 134;
+			faqBtn.graph.y = 6;
+
+			let addBtn = new Btn(100, 50, 'Пригласить друзей');
+			addBtn.graph.x = 244;
+			addBtn.graph.y = 6;
 			// var button = game.make.button(game.world.centerX - 95, 400, 'button', removeGroup, this, 2, 1, 0);
 
 		  //   button.onInputOver.add(over, this);

@@ -2,6 +2,7 @@ import {App} from './../app'
 import GOFactory from './../fotoCross/GOFactory';
 import FadeOunIn from './../effects/fadeOutIn';
 import { Btn } from '../gui/btn';
+import { WrongAnswer, RightAswer } from '../gui/message';
 
 export default function gameState() {
 	let selectedWord = null;
@@ -76,7 +77,8 @@ export default function gameState() {
 
 			let cw = factory.crossword(parsedLevel);
 			let crossword = cw.graph;
-			crossword.x = crossword.y = 16;
+			crossword.x = 16;
+			crossword.y = 70;
 			//add mouseDown event handler (phaser way)
 			crossword.children.forEach(wordGr => {
 				wordGr.children.forEach(letterGr =>{
@@ -89,7 +91,7 @@ export default function gameState() {
 							if(letter.label.length == 0 || letter.state == 'block')
 								return;
 
-							letter.text = '';
+							selectedWord.fillAt(letter.id, '');
 							letter._palette.show();
 
 							return;
@@ -122,21 +124,34 @@ export default function gameState() {
 						letter.data.instance.hide();
 					}
 
-					if(selectedWord.isFilled() && selectedWord.isCorrect()){
-						selectedWord.setState('block');
+					if(selectedWord.isFilled() && nextLetter){
+						if(selectedWord.isCorrect()){
+							selectedWord.setState('block');
 
-						for(let i=0; i< selectedWord.text.length; i++){
-							let cross = cw.map[selectedWord.graph.x / 32 + i*selectedWord.direction][selectedWord.graph.y / 32 + i*(!selectedWord.direction)];
-							let orig = cross.find(letter => {return letter.parent.data.instance.id == selectedWord.id});
+							for(let i=0; i< selectedWord.text.length; i++){
+								let cross = cw.map[selectedWord.graph.x / 32 + i*selectedWord.direction][selectedWord.graph.y / 32 + i*(!selectedWord.direction)];
+								let orig = cross.find(letter => {return letter.parent.data.instance.id == selectedWord.id});
 
-							cross.forEach(letter => {
-								if(letter.parent.data.instance.id!=selectedWord.id){
-									letter.parent.data.instance.fillAt(letter.data.instance.id, orig.data.instance.label);
-									letter.data.instance.setState('block');
-								}
-							})
+								cross.forEach(letter => {
+									if(letter.parent.data.instance.id!=selectedWord.id){
+										letter.parent.data.instance.fillAt(letter.data.instance.id, orig.data.instance.label);
+										letter.data.instance.setState('block');
+									}
+								})
+							}
+
+							let m = new RightAswer(selectedWord.text);
+							m.graph.x = 0;
+							m.graph.y = 0;
+							setTimeout(()=>{m.graph.destroy();m = null;}, 1000);
+						}else{
+							let m = new WrongAnswer();
+							m.graph.x = 200;
+							m.graph.y = 460;
+
+							setTimeout(()=>{m.graph.destroy();m = null;}, 1000);
 						}
-					}
+					}					
 				});
 			});
 
@@ -150,13 +165,13 @@ export default function gameState() {
 				console.log(selectedWord.text);
 			}, this);
 			
-			let backBtn = new Btn(100, 40, 'В меню');
+			let saleBtn = new Btn(120, 60, 'Акция', ()=>{});
+			saleBtn.graph.x = 4;
+			saleBtn.graph.y = 4;
+
+			let backBtn = new Btn(100, 40, 'В меню', ()=>{App.phaser.state.start('mainMenu');});
 			backBtn.graph.x = 4;
 			backBtn.graph.y = 600;
-
-			backBtn.graph.onChildInputDown.add((target)=>{
-				App.phaser.state.start('mainMenu');}
-			);
 
 			App.phaser.load.start();
 		},
