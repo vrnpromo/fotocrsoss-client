@@ -1,4 +1,4 @@
-import App from '././../app';
+import {App} from '././../app';
 import FadeOunIn from './../effects/fadeOutIn';
 
 export default class Word{

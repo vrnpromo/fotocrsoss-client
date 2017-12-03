@@ -1,4 +1,4 @@
-import App from './../app'
+import {App} from './../app'
 import Word from './word'
 
 export default class Crossword{

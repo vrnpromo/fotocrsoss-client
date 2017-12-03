@@ -1,3 +1,5 @@
+import { App } from "../app";
+
 export default class CluePhoto{
     constructor(){
         this.graph = null
@@ -16,8 +18,8 @@ export default class CluePhoto{
         }
     }
 
-    render(phaser){
-        this.graph = phaser.add.group();
+    render(){
+        this.graph = App.phaser.add.group();
         this.graph.create(0,0, 'bg_fot');
 
         return this.graph;

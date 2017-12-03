@@ -14,6 +14,11 @@ export default class Net
 		this.oDataLoader.secret_key = oGameData.secret_key;
 	}
 	
+	getGeneralData (callback, error = null) {
+		//http://www.sweetbear.info/base/od/htdocs/index.php?m=|||uid||100200300|||s_key||-1|||m||0||0||general.get_data|||m||0||1||{}
+		this.oDataLoader.request_obf('general.get_data', {}, callback, error);
+	}
+
 	//-------------------------------/ Общие методы /--------------------------------------------
 	
 	/**

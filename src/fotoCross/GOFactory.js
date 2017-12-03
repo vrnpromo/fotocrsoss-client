@@ -1,3 +1,4 @@
+import { App } from '../app';
 import Letter from './letter'
 import Word from './word'
 import Crossword from './crossword'
@@ -5,8 +6,8 @@ import LetterPalette from './letterPalette'
 import CluePhoto from './cluePhoto'
 
 export default class GOFactory{
-	constructor(phaser){
-		this.phaser = phaser;
+	constructor(){
+		this.phaser = App.phaser;
 	}
 	
 	letter(x, y, label = ''){
@@ -31,7 +32,7 @@ export default class GOFactory{
 	
 	photo(x, y){
 		let cp = new CluePhoto();
-		cp.render(this.phaser);
+		cp.render();
 
 		cp.graph.x = x;
 		cp.graph.y = y;

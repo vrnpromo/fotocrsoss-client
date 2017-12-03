@@ -1,34 +1,37 @@
-import App from './../app'
+import {App} from './../app'
 import GOFactory from './../fotoCross/GOFactory';
 import FadeOunIn from './../effects/fadeOutIn';
+import { Btn } from '../gui/btn';
 
-export default function gameState(phaser) {
+export default function gameState() {
 	let selectedWord = null;
 
 	let data = {};
 
-	let factory = new GOFactory(phaser);
+	let factory = new GOFactory(App.phaser);
 	App.factory = factory;
 	
 	return {
 		preload: function () {
 			//phaser.load.image('bg', './data/Background.png');//t2
-			phaser.load.image('bg_fot', './data/BackgroundFot.png');
-			phaser.load.image('letter_empty', './data/Letter8x8.png');
-			phaser.load.image('letter_over', './data/Letter8x8selected.png');
-			phaser.load.image('letter_block', './data/Letter8x8blocked.png');
+			App.phaser.load.image('bg_fot', './data/BackgroundFot.png');
+			App.phaser.load.image('letter_empty', './data/Letter8x8.png');
+			App.phaser.load.image('letter_over', './data/Letter8x8selected.png');
+			App.phaser.load.image('letter_block', './data/Letter8x8blocked.png');
 			//gui
 			//phaser.load.image('gui_game_btn', './data/ButtonsNormal.png');
-			
-			phaser.load.xml('level', './data/levels/901.xml', false);
+			let mission_stat = App.storage.generalData['mission_stat'].find( m => m.id == App.storage.missionId);
+
+			//App.phaser.load.xml('level', `${App.storage.generalData.vars.find(v => v.key == 'path_base').value}/${mission_stat.path}`, false);
+			App.phaser.load.xml('level', './data/levels/901.xml', false);
 			
 		},
 		create: function(){
-			phaser.add.sprite(0, 0, 'bg');
+			App.phaser.add.sprite(0, 0, 'bg');
 			
 			let cluePhoto = factory.photo(750 - 304, 70);		
 			
-			let btnCont = phaser.add.group();
+			let btnCont = App.phaser.add.group();
 			btnCont.create(0,0, 'gui_game_btn');
 			btnCont.create(96 + 12, 0, 'gui_game_btn');
 			btnCont.create((96 + 12)*2, 0, 'gui_game_btn');
@@ -47,7 +50,7 @@ export default function gameState(phaser) {
 			//    	item.events.onInputUp.add(release);
 			//    	item.events.onInputOut.add(moveOff);
 			
-			var xml = phaser.cache.getXML('level');
+			var xml = App.phaser.cache.getXML('level');
 			
 			let parsedLevel = [];
 			let count = 0;
@@ -68,7 +71,7 @@ export default function gameState(phaser) {
 				w.direction = (w.pos.x == w.pos.x2 ? 0 : 1); // 0 - vertical, 1 - horizontal
 				
 				parsedLevel.push(w);
-				phaser.load.image('pic'+(++count), `./data/imgs/${w.img}`);
+				App.phaser.load.image('pic'+(++count), `./data/imgs/${w.img}`);
 			});
 
 			let cw = factory.crossword(parsedLevel);
@@ -137,7 +140,7 @@ export default function gameState(phaser) {
 				});
 			});
 
-			phaser.load.onLoadComplete.add(()=> {
+			App.phaser.load.onLoadComplete.addOnce(()=> {
 				selectedWord = crossword.children[0].data.instance;
 				selectedWord.setState('over');
 				crossword.bringToTop(selectedWord.graph);
@@ -147,7 +150,15 @@ export default function gameState(phaser) {
 				console.log(selectedWord.text);
 			}, this);
 			
-			phaser.load.start();
+			let backBtn = new Btn(100, 40, 'В меню');
+			backBtn.graph.x = 4;
+			backBtn.graph.y = 600;
+
+			backBtn.graph.onChildInputDown.add((target)=>{
+				App.phaser.state.start('mainMenu');}
+			);
+
+			App.phaser.load.start();
 		},
 		update: function(){
 
