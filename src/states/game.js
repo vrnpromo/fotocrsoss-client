@@ -22,8 +22,8 @@ export default function gameState() {
 			//gui
 			//phaser.load.image('gui_game_btn', './data/ButtonsNormal.png');
 			let mission_stat = App.storage.generalData['mission_stat'].find( m => m.id == App.storage.missionId);
-
-			//App.phaser.load.xml('level', `${App.storage.generalData.vars.find(v => v.key == 'path_base').value}/${mission_stat.path}`, false);
+			//${mission_stat.path}
+			App.phaser.load.xml('level_t', `${App.storage.generalData.vars.find(v => v.key == 'path_base').value}/lvl/001.xml`, false);
 			App.phaser.load.xml('level', './data/levels/901.xml', false);
 			
 		},
