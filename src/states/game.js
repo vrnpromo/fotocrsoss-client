@@ -23,8 +23,8 @@ export default function gameState() {
 			//phaser.load.image('gui_game_btn', './data/ButtonsNormal.png');
 			let mission_stat = App.storage.generalData['mission_stat'].find( m => m.id == App.storage.missionId);
 			//${mission_stat.path}
-			App.phaser.load.xml('level_t', `https://www.maganza.ru/fsnew/vk/lvl/001.xml`, false);
-			App.phaser.load.xml('level', './data/levels/901.xml', false);
+			//App.phaser.load.xml('level', './data/levels/901.xml', false);
+			App.phaser.load.xml("level","lvl/001.xml", false)
 			
 		},
 		create: function(){
@@ -72,7 +72,7 @@ export default function gameState() {
 				w.direction = (w.pos.x == w.pos.x2 ? 0 : 1); // 0 - vertical, 1 - horizontal
 				
 				parsedLevel.push(w);
-				App.phaser.load.image('pic'+(++count), `./data/imgs/${w.img}`);
+				App.phaser.load.image('pic'+(++count), `./img/${w.img}`);
 			});
 
 			let cw = factory.crossword(parsedLevel);
