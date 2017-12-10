@@ -24,8 +24,7 @@ export default function gameState() {
 			let mission_stat = App.storage.generalData['mission_stat'].find( m => m.id == App.storage.missionId);
 			//${mission_stat.path}
 			//App.phaser.load.xml('level', './data/levels/901.xml', false);
-			App.phaser.load.xml("level","lvl/001.xml", false)
-			
+			App.phaser.load.xml('level', `lvl/${mission_stat.path}`, false);
 		},
 		create: function(){
 			App.phaser.add.sprite(0, 0, 'bg');
@@ -41,16 +40,6 @@ export default function gameState() {
 			btnCont.y = 70 + 304 + 14;
 			btnCont.scale.setTo(0.72, 0.72);
 						
-			//this.pet.loadTexture('pet_black_hat');
-			// var button = game.make.button(game.world.centerX - 95, 400, 'button', removeGroup, this, 2, 1, 0);
-			
-			//   button.onInputOver.add(over, this);
-			//   button.onInputOut.add(out, this);
-			
-			// item.events.onInputDown.add(select);
-			//    	item.events.onInputUp.add(release);
-			//    	item.events.onInputOut.add(moveOff);
-			
 			var xml = App.phaser.cache.getXML('level');
 			
 			let parsedLevel = [];

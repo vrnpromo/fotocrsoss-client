@@ -1,32 +1,31 @@
-import {App} from './../app'
+import {App} from './../app';
+import { ImgBtn } from './imgBtn';
 
 export class SelectLevelBtn{
     constructor(lvlDescription){
-        let width = 410;
-        let height = 106;
+        this.width = 200;
+        this.height = 240;
 
         let group = App.phaser.add.group();
         group.inputEnableChildren = true;
 
-        let graphics = App.phaser.add.graphics(0, 0);
-        graphics.beginFill(0xFFFFFF, 1);
-        graphics.lineStyle(2, 0xCDCDCD, 1);
-        graphics.drawRect(0, 0, width, height);
-        graphics.endFill();
+        // let graphics = App.phaser.add.graphics(0, 0);
+        // graphics.beginFill(0xFFFFFF, 1);
+        // graphics.lineStyle(2, 0xCDCDCD, 1);
+        // graphics.drawRect(0, 0, width, height);
+        // graphics.endFill();
+        // group.add(graphics);
+        let imgData = App.assetService.get('img_category_back');
+        group.create(0, 0, imgData.atlas, imgData.key);
 
-        let btn = App.phaser.add.group();
+        let btn = new ImgBtn('btn_play_normal', 'btn_play_over');
+        btn.graph.x = 8;
+        btn.graph.y = this.height - 60;     
 
-        btn.create(0, 0, 'gui_game_btn');
-        let label = App.phaser.add.text(12, 12, "Играть", { font: "24px Arial", fill: "#000000", align: "center" }, btn);
+        group.add(btn.graph);
 
-        btn.x = width - 100;
-        btn.y = 4;     
-
-        group.add(graphics);
-        group.add(btn);
-
-        this.lvlDescription = App.phaser.add.text(12, 12, lvlDescription, { font: "24px Arial", fill: "#000000", align: "center" }, group);
-        this.lvlMissionCount = App.phaser.add.text(width - 160, 12, '0 / 40', { font: "24px Arial", fill: "#000000", align: "center" }, group);
+        this.lvlMissionCount = App.phaser.add.text(0, 140, '0 / 40', { font: "24px Arial", fill: "#000000", align: "center" }, group);
+        this.lvlMissionCount.x = (this.width >> 1) - (this.lvlMissionCount.width>>1);
 
         group.data = {instance: this};
         this.graph = group;
@@ -36,5 +35,6 @@ export class SelectLevelBtn{
 
     setProgress(current, all){
         this.lvlMissionCount.setText(`${current}/${all}`);
+        this.lvlMissionCount.x = (this.width >> 1) - (this.lvlMissionCount.width>>1);
     }
 }
