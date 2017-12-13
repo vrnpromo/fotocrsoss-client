@@ -3,6 +3,9 @@ import GOFactory from './../fotoCross/GOFactory';
 import FadeOunIn from './../effects/fadeOutIn';
 import { Btn } from '../gui/btn';
 import { WrongAnswer, RightAswer } from '../gui/message';
+import { DataLoader } from '../net/DataLoader';
+import { ImgBtn } from '../gui/imgBtn';
+import { MoneyBtn } from '../gui/moneyBtn';
 
 export default function gameState() {
 	let selectedWord = null;
@@ -15,16 +18,13 @@ export default function gameState() {
 	return {
 		preload: function () {
 			//phaser.load.image('bg', './data/Background.png');//t2
-			App.phaser.load.image('bg_fot', './data/BackgroundFot.png');
-			App.phaser.load.image('letter_empty', './data/Letter8x8.png');
-			App.phaser.load.image('letter_over', './data/Letter8x8selected.png');
-			App.phaser.load.image('letter_block', './data/Letter8x8blocked.png');
+			
 			//gui
 			//phaser.load.image('gui_game_btn', './data/ButtonsNormal.png');
 			let mission_stat = App.storage.generalData['mission_stat'].find( m => m.id == App.storage.missionId);
 			//${mission_stat.path}
 			//App.phaser.load.xml('level', './data/levels/901.xml', false);
-			App.phaser.load.xml('level', `lvl/${mission_stat.path}`, false);
+			App.phaser.load.xml('level', `${DataLoader.SERVER_LEVELS_URL}/${mission_stat.path}`, false);
 		},
 		create: function(){
 			App.phaser.add.sprite(0, 0, 'bg');
@@ -61,7 +61,7 @@ export default function gameState() {
 				w.direction = (w.pos.x == w.pos.x2 ? 0 : 1); // 0 - vertical, 1 - horizontal
 				
 				parsedLevel.push(w);
-				App.phaser.load.image('pic'+(++count), `./img/${w.img}`);
+				App.phaser.load.image('pic'+(++count), `${DataLoader.SERVER_IMGS_URL}/${w.img}`);
 			});
 
 			let cw = factory.crossword(parsedLevel);
@@ -102,6 +102,8 @@ export default function gameState() {
 			});
 
 			let letterPalette = factory.letterPalette(150, 650 - 140, 10, 2);
+			let rightAswer;
+			let wrongAnswer;
 
 			letterPalette.graph.children.forEach(letter => {
 				letter.onChildInputDown.add((s,l) => {
@@ -129,16 +131,27 @@ export default function gameState() {
 								})
 							}
 
-							let m = new RightAswer(selectedWord.text);
-							m.graph.x = 0;
-							m.graph.y = 0;
-							setTimeout(()=>{m.graph.destroy();m = null;}, 1000);
+							if(!rightAswer) {
+								rightAswer = new RightAswer(selectedWord.text);
+								rightAswer.graph.x = 0;
+								rightAswer.graph.y = 0;
+	
+								rightAswer.callback = () => {
+									rightAswer.graph.destroy();
+									rightAswer = null;
+								}
+							}
 						}else{
-							let m = new WrongAnswer();
-							m.graph.x = 200;
-							m.graph.y = 460;
+							if(!wrongAnswer){
+								wrongAnswer = new WrongAnswer();
+								wrongAnswer.graph.graph.x = 240;
+								wrongAnswer.graph.graph.y = 460;
 
-							setTimeout(()=>{m.graph.destroy();m = null;}, 1000);
+								wrongAnswer.graph.callback = ()=>{ 
+									wrongAnswer.graph.graph.destroy(); 
+									wrongAnswer = null;
+								};
+							}
 						}
 					}					
 				});
@@ -154,14 +167,26 @@ export default function gameState() {
 				console.log(selectedWord.text);
 			}, this);
 			
-			let saleBtn = new Btn(120, 60, 'Акция', ()=>{});
-			saleBtn.graph.x = 4;
-			saleBtn.graph.y = 4;
+			let saleBtn = new ImgBtn('btn_action_normal','btn_action_over');
+			saleBtn.graph.x = 10;
+			saleBtn.graph.y = 10;
 
-			let backBtn = new Btn(100, 40, 'В меню', ()=>{App.phaser.state.start('mainMenu');});
-			backBtn.graph.x = 4;
+			let faqBtn = new ImgBtn('btn_help_normal','btn_help_over');
+			faqBtn.graph.x = 568;
+			faqBtn.graph.y = 10;
+
+			let sndBtn = new ImgBtn('btn_sound_on_normal','btn_sound_on_over');
+			sndBtn.graph.x = 704;
+			sndBtn.graph.y = 10;
+
+			let moneyBtn = new MoneyBtn();
+			moneyBtn.graph.x = 280;
+			moneyBtn.graph.y = 6;
+
+			let backBtn = new ImgBtn('btn_exit_game_normal','btn_exit_game_over', ()=>{App.phaser.state.start('mainMenu');});
+			backBtn.graph.x = 10;
 			backBtn.graph.y = 600;
-
+			
 			App.phaser.load.start();
 		},
 		update: function(){

@@ -1,15 +1,6 @@
 import axios from 'axios';
 import MD5 from './MD5';
 
-var instance = axios.create({
-	//baseURL: 'https://some-domain.com/api/',
-	timeout: 1000,
-	headers: {
-		'Content-Type': 'application/x-www-form-urlencoded',
-		'Accept': 'text/json'
-	}
-});
-
 function completeHandler_obf(res, callback, error) 
 {
 		if (res.error)
@@ -119,12 +110,14 @@ function getData_obf(method, data)
 	return str.slice(0, str.length - 1);
 }	
 
-export default class DataLoader {
+export class DataLoader {
 	static get RESPONSE_DATA_FORMAT(){ return 'JSON'};
 	//static get REQUEST_HTTP_MODE() {return 'POST'};
 	static get API_VERSION(){return '1.0'};
 	
-	static get SERVER_URL() {return "https://maganza.ru/fsnew/vk/htdocs/index.php"}
+	static get SERVER_API_URL() {return "https://maganza.ru/fsnew/vk/htdocs/index.php"}
+	static get SERVER_LEVELS_URL() {return "lvl"}
+	static get SERVER_IMGS_URL() {return "./img"}
 	static get api_id(){return "3226070"}
 	static get secret_key() {return "zyn1WEQdzV92jTYqDevK"}
 
@@ -132,6 +125,9 @@ export default class DataLoader {
 	//public const VKSecret:String 	= 'F6F24DDD8B1602C25CD44455';	// Секретный ключ приложения
 	
 	//public const VKPublic:String 	= 'CBANIQFMABABABABA';			// Публичный ключ приложения
+	constructor(){
+
+	}
 	
 	request_obf(method, data = null, callback = null, error = null)
 	{
@@ -180,7 +176,7 @@ export default class DataLoader {
 		
 		//lr.load(request);
 
-		axios.get(DataLoader.SERVER_URL, {
+		axios.get(DataLoader.SERVER_API_URL, {
 			// headers: {
 			// 	'Access-Control-Allow-Origin': '*',
 			//   },

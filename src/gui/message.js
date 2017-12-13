@@ -1,13 +1,9 @@
 import { App } from "../app";
+import { ImgBtn } from "./imgBtn";
 
 export class WrongAnswer{
-    constructor(){
-        let group = App.phaser.add.group();
-
-        this.label = App.phaser.add.text(0, 0, 'Ответ неверный', { font: "24px Arial", fill: "#000000", align: "center", wordWrap: false }, group);
-        //this.label.width = width;
-        
-        this.graph = group;
+    constructor(){        
+        this.graph = new ImgBtn('btn_word_wrong_normal','btn_word_wrong_over');
     }
 }
 

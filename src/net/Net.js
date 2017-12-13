@@ -1,4 +1,4 @@
-import DataLoader from './DataLoader'
+import { DataLoader } from './DataLoader'
 
 export default class Net
 {	

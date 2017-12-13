@@ -9,11 +9,7 @@ import { MoneyBtn } from "../gui/moneyBtn";
 export default function() {
 	return{
 		preload:()=>{
-			App.phaser.load.image('bg', './data/Background.png');//t2
-						
-			//gui
-			App.phaser.load.image('gui_game_btn', './data/ButtonsNormal.png');
-			App.phaser.load.image('gui_game_btn_over', './data/ButtonsOver.png');
+			
 		},
 		create:()=>{
 			App.phaser.add.sprite(0, 0, 'bg');
@@ -41,7 +37,7 @@ export default function() {
 
 			let moneyBtn = new MoneyBtn();
 			moneyBtn.graph.x = 280;
-			moneyBtn.graph.y = 10;
+			moneyBtn.graph.y = 6;
 		},
 		update:()=>{},
 		render:()=>{}
