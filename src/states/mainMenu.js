@@ -5,6 +5,7 @@ import { Btn } from "../gui/btn";
 import { StagesList } from "../gui/stagesList";
 import { ImgBtn } from "../gui/imgBtn";
 import { MoneyBtn } from "../gui/moneyBtn";
+import { GameFaq } from "../fotoCross/gameFaq";
 
 export default function() {
 	return{
@@ -24,19 +25,27 @@ export default function() {
 
 
 			let saleBtn = new ImgBtn('btn_action_normal','btn_action_over');
-			saleBtn.graph.x = 10;
-			saleBtn.graph.y = 10;
+			saleBtn.graph.x = 12;
+			saleBtn.graph.y = 8;
 
 			let faqBtn = new ImgBtn('btn_help_normal','btn_help_over');
 			faqBtn.graph.x = 568;
-			faqBtn.graph.y = 10;
+			faqBtn.graph.y = 8;
+
+			faqBtn.callback = ()=>{
+				let faq = new GameFaq();
+				faq.onClose = ()=>{
+					faq.graph.destroy();
+					faq = null;
+				}
+			}
 
 			let sndBtn = new ImgBtn('btn_sound_on_normal','btn_sound_on_over');
 			sndBtn.graph.x = 704;
-			sndBtn.graph.y = 10;
+			sndBtn.graph.y = 8;
 
 			let moneyBtn = new MoneyBtn();
-			moneyBtn.graph.x = 280;
+			moneyBtn.graph.x = 292;
 			moneyBtn.graph.y = 6;
 		},
 		update:()=>{},
