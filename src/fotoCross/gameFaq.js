@@ -35,23 +35,37 @@ export class GameFaq {
         group.add(closeBtn.graph);
 
         let render = function () {
-            let img = group.create(0, 0, 'tutorial_0');
+            let current = 0;
+            let img = group.create(0, 0, imgs[current]);
+
             img.x = (App.phaser.world.width >> 1) - (img.width >> 1);
             img.y = (App.phaser.world.height >> 1) - (img.height >> 1);
 
-            prev.graph.x = img.x - prev.graph.width - 4;
-            prev.graph.y = img.y + (img.height >> 1) - (prev.graph.height >> 1);
+            if(imgs.length>1){
+                prev.graph.x = img.x - prev.graph.width - 4;
+                prev.graph.y = img.y + (img.height >> 1) - (prev.graph.height >> 1);
+                prev.callback = ()=>{
+                    if(current - 1 >= 0)
+                        img.loadTexture(imgs[--current]);
+                }
 
-            next.graph.x = img.x + img.width + prev.graph.width + 4;
-            next.graph.y = img.y + (img.height >> 1) - (prev.graph.height >> 1);
+                next.graph.x = img.x + img.width + prev.graph.width + 4;
+                next.graph.y = img.y + (img.height >> 1) - (prev.graph.height >> 1);
+                next.callback = ()=>{
+                    if(current + 1 < imgs.length)
+                        img.loadTexture(imgs[++current]);
+                }
+
+                prev.graph.visible = true;
+                next.graph.visible = true;
+            }
 
             closeBtn.graph.x = img.x + (img.width >> 1) - (closeBtn.graph.width >> 1);
-            closeBtn.graph.y = img.y + img.height + 4;
-
-            prev.graph.visible = true;
-            next.graph.visible = true;
+            closeBtn.graph.y = img.y + img.height + 4;            
             closeBtn.graph.visible = true;
         }
+
+        let imgs = [];
 
         if (App.phaser.cache.checkImageKey('tutorial_0')) {
             render();
@@ -64,6 +78,7 @@ export class GameFaq {
 
                     res.data.imgs.forEach((img, i) => {
                         App.phaser.load.image(`tutorial_${i}`, './data/tutorial/' + img);
+                        imgs.push(`tutorial_${i}`);
                     });
 
                     App.phaser.load.start();

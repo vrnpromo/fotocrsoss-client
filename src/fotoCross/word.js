@@ -9,6 +9,9 @@ export default class Word{
         this.text = text; // actual word
         this.textArr = []; // guess word
         this.direction = direction; // 0 - vertical, 1 - horizontal
+
+        this.lw = 34; // letter width
+        this.lh = 34; // letter height
     }
 
     render(){
@@ -16,7 +19,7 @@ export default class Word{
         let length = this.text.length - 1;
 
         for(let i = 0; i < this.text.length; i++){
-            let letter = App.factory.letter((this.direction==0 ? 0 : i) * 32, (this.direction == 1 ? 0 : i) * 32);//this.text[i]
+            let letter = App.factory.letter((this.direction==0 ? 0 : i) * this.lw, (this.direction == 1 ? 0 : i) * this.lh);//this.text[i]
             letter.id = i;
             cont.add(letter.graph);
             this.textArr.push('');

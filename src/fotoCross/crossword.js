@@ -16,8 +16,8 @@ export default class Crossword{
             w.id = word.id;
 
             cont.add(w.render(this.phaser));
-            w.graph.x = word.pos.x * 32;
-            w.graph.y = word.pos.y * 32;
+            w.graph.x = word.pos.x * w.lw;
+            w.graph.y = word.pos.y * w.lh;
             
             
             for(let i=0; i< word.text.length; i++){

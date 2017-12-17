@@ -21,14 +21,12 @@ export default class Letter{
 		this._label.setText(this.label);
 	}
 	
-	render(asset = 'letter_empty') {
-		let bmp =  App.phaser.add.bitmapData(32, 32);
-		bmp.draw(asset, 0, 0, 32, 32);
-		
+	render() {		
 		let style = { font: "24px Arial", fill: "#000000", align: "center" };
 		let group = App.phaser.add.group();
 		//group.inputEnableChildren = true;
-		let sprite = group.create(0, 0, bmp);
+		let imgData = App.assetService.get('12х12-letter_word_normal');
+		let sprite = group.create(0, 0, imgData.atlas, imgData.key);
 		sprite.inputEnabled = true;
 		sprite.input.useHandCursor = true;
 		
@@ -69,18 +67,16 @@ export default class Letter{
 		let sprite = this.graph.children[0];
 
 		switch(state){
-			case 'default': key='letter_empty'; break;
-			case 'over': key='letter_over'; break;
+			case 'default': key='12х12-letter_word_normal'; break;
+			case 'over': key='12х12-letter_word_selected'; break;
 			case 'block': 
-				key='letter_block'; 
+				key='12х12-letter_word_completed'; 
 				//sprite.inputEnabled = false;
 				//sprite.input.useHandCursor = false;
 				break;
 		}
 
-		let bmd = App.phaser.add.bitmapData(32, 32);
-		bmd.draw(key, 0, 0, 32, 32);
-		sprite.setTexture(bmd.texture);
+		sprite.frameName = App.assetService.get(key).key;
 
 		this.state = state;
 	}

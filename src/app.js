@@ -2,6 +2,7 @@ import mainMenuState from './states/mainMenu.js'
 import gameState from './states/game.js'
 import Net from './net/Net'
 import { AssetService } from './utils/AssetService';
+import GOFactory from './fotoCross/GOFactory';
 
 class App{
     constructor(){
@@ -16,6 +17,7 @@ function preload(){
     App.net = new Net();
     App.storage = {onGeneralData: new Phaser.Signal()};
     App.assetService = new AssetService();
+    App.factory = new GOFactory();
 }
 
 function create(){
