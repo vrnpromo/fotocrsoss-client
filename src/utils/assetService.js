@@ -20,6 +20,7 @@ export class AssetService{
         App.phaser.load.image('tut_bg', './data/tutorial/bg.png');
         
         App.phaser.load.atlasXML('assets', './data/sprites.png', './data/sprites.xml');
+        App.phaser.load.json('tutorial', './data/tutorial.json');
 
         return instance;
     }

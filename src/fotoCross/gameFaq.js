@@ -66,23 +66,25 @@ export class GameFaq {
         }
 
         let imgs = [];
-
+        var json = App.phaser.cache.getJSON('tutorial');
+        
         if (App.phaser.cache.checkImageKey('tutorial_0')) {
+            json.imgs.forEach((img, i) => {
+                imgs.push(`tutorial_${i}`);
+            });
+
             render();
         } else {
-            axios.get('./data/tutorial.json', {})
-                .then(res => {
-                    App.phaser.load.onLoadComplete.addOnce(() => {
-                        render();
-                    }, this);
+            App.phaser.load.onLoadComplete.addOnce(() => {
+                render();
+            }, this);
 
-                    res.data.imgs.forEach((img, i) => {
-                        App.phaser.load.image(`tutorial_${i}`, './data/tutorial/' + img);
-                        imgs.push(`tutorial_${i}`);
-                    });
+            json.imgs.forEach((img, i) => {
+                App.phaser.load.image(`tutorial_${i}`, './data/tutorial/' + img);
+                imgs.push(`tutorial_${i}`);
+            });
 
-                    App.phaser.load.start();
-                });
+            App.phaser.load.start();
         }
 
         this.graph = group;
