@@ -20,9 +20,9 @@ export default function() {
 			stages.graph.x = 70;
 			stages.graph.y = 200;
 
-			stages.fill(App.storage.generalData);
-			App.storage.onGeneralData.addOnce((data)=> stages.fill(data));
-
+			// App.storage.onGeneralData.addOnce((data)=> {
+			// 	updateGUI();
+			// });
 
 			let saleBtn = new ImgBtn('btn_action_normal','btn_action_over');
 			saleBtn.graph.x = 12;
@@ -47,6 +47,13 @@ export default function() {
 			let moneyBtn = new MoneyBtn();
 			moneyBtn.graph.x = 292;
 			moneyBtn.graph.y = 6;
+
+			function updateGUI(){
+				stages.fill(App.storage.generalData);
+				moneyBtn.setMoney(App.storage.userData ? App.storage.userData.user.money1:'0');
+			}
+
+			updateGUI();
 		},
 		update:()=>{},
 		render:()=>{}

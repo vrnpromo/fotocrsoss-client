@@ -4,32 +4,34 @@ import Net from './net/Net'
 import { AssetService } from './utils/AssetService';
 import GOFactory from './fotoCross/GOFactory';
 
-class App{
-    constructor(){
-        App.phaser = new Phaser.Game(760, 650, Phaser.CANVAS, 'game', { 
-            preload: preload, 
-            create: create 
+class App {
+    constructor() {
+        App.phaser = new Phaser.Game(760, 650, Phaser.CANVAS, 'game', {
+            preload: preload,
+            create: create
         });
     }
 }
 
-function preload(){
+function preload() {
     App.net = new Net();
-    App.storage = {onGeneralData: new Phaser.Signal()};
+    App.storage = { onGeneralData: new Phaser.Signal() };
     App.assetService = new AssetService();
     App.factory = new GOFactory();
 }
 
-function create(){
+function create() {
     App.phaser.state.add('mainMenu', mainMenuState());
     App.phaser.state.add('game', gameState());
-    
-    App.phaser.state.start('mainMenu');
-    
+
+    //App.phaser.state.start('mainMenu');
+
     App.net.firstLoad(resp => {
         App.storage.generalData = resp.general[0][1];
-        App.storage.onGeneralData.dispatch(App.storage.generalData);
-        console.log(`ok:${resp}`); // ['method', {data}]
+        App.storage.userData = resp.user[0][1];
+        //App.storage.onGeneralData.dispatch(App.storage.generalData);
+
+        App.phaser.state.start('mainMenu');
     });
 
     // App.net.getGeneralData( resp => {
@@ -41,6 +43,6 @@ function create(){
     // });
 }
 
-export {App};
+export { App };
 
 new App();

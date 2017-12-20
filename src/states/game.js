@@ -6,6 +6,7 @@ import { DataLoader } from '../net/DataLoader';
 import { ImgBtn } from '../gui/imgBtn';
 import { MoneyBtn } from '../gui/moneyBtn';
 import { GameFaq } from '../fotoCross/gameFaq';
+import { OpenLetter } from '../gui/boosters/openLetter';
 
 let crossword;
 let cluePhoto;
@@ -25,14 +26,21 @@ function backToMenu(){
 }
 
 function renderBoosters(){
-	let btnCont = App.phaser.add.group();
-	btnCont.create(0,0, 'gui_game_btn');
-	btnCont.create(96 + 12, 0, 'gui_game_btn');
-	btnCont.create((96 + 12)*2, 0, 'gui_game_btn');
-	btnCont.create((96 + 12)*3, 0, 'gui_game_btn');
-	btnCont.x = 750-304;
-	btnCont.y = 70 + 304 + 14;
-	btnCont.scale.setTo(0.72, 0.72);
+	let cont = App.phaser.add.group();
+
+	let openLetter = new OpenLetter();
+	cont.add(openLetter.graph);
+
+	let removeLetter = new OpenLetter();
+	removeLetter.graph.x = openLetter.graph.width + 8;
+	cont.add(removeLetter.graph);
+
+	let askFriend = new OpenLetter();
+	askFriend.graph.x = removeLetter.graph.x + removeLetter.graph.width + 8;
+	cont.add(askFriend.graph);
+
+	cont.x = 750-304;
+	cont.y = 70 + 304 + 14;
 }
 
 function renderCrossword(parsedLevel){
