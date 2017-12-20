@@ -26,13 +26,19 @@ function create(){
     
     App.phaser.state.start('mainMenu');
     
-    App.net.getGeneralData( resp => {
-        App.storage.generalData = resp[0][1];
+    App.net.firstLoad(resp => {
+        App.storage.generalData = resp.general[0][1];
         App.storage.onGeneralData.dispatch(App.storage.generalData);
         console.log(`ok:${resp}`); // ['method', {data}]
-    }, e => {
-        console.log(`err:${e}`);
     });
+
+    // App.net.getGeneralData( resp => {
+    //     App.storage.generalData = resp[0][1];
+    //     App.storage.onGeneralData.dispatch(App.storage.generalData);
+    //     console.log(`ok:${resp}`); // ['method', {data}]
+    // }, e => {
+    //     console.log(`err:${e}`);
+    // });
 }
 
 export {App};

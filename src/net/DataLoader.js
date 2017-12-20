@@ -69,7 +69,8 @@ function _secureError(ev)
 
 function getData_obf(method, data)
 {
-	return {m: `|||${data.uid || 'uid'}||100200300||${data.s_key || 's_key'}||-1|||m||0||0||${method}|||m||0||1||{}`}
+	//m=|||uid||100200710|||s_key||-1|||m||0||0||user.init|||m||0||1||{}
+	return {m: `|||${data.uid || 'uid'}||100200300|||${data.s_key || 's_key'}||-1|||m||0||0||${method}|||m||0||1||{}`}
 
 	// data.method 	= method;
 	// data.format 	= DataLoader.RESPONSE_DATA_FORMAT;			
@@ -176,21 +177,11 @@ export class DataLoader {
 		
 		//lr.load(request);
 
-		axios.get(DataLoader.SERVER_API_URL, {
+		return axios.get(DataLoader.SERVER_API_URL, {
 			// headers: {
 			// 	'Access-Control-Allow-Origin': '*',
 			//   },
 			params: getData_obf(method, data)
-		})
-		.then(function (response) {
-			//lr.addEventListener(Event.COMPLETE, completeHandler_obf); 
-			//console.log(response);
-			completeHandler_obf(response, callback, error);
-		})
-		.catch(function (error) {
-			console.log(error);
-			//lr.addEventListener(IOErrorEvent.IO_ERROR, 				this._ioError);
-			//lr.addEventListener(SecurityErrorEvent.SECURITY_ERROR, 	this._secureError);
 		});
 	}
 }
