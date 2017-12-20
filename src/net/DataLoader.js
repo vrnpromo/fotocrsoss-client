@@ -69,8 +69,13 @@ function _secureError(ev)
 
 function getData_obf(method, data)
 {
+<<<<<<< HEAD
 	//m=|||uid||100200710|||s_key||-1|||m||0||0||user.init|||m||0||1||{}
 	return {m: `|||${data.uid || 'uid'}||100200300|||${data.s_key || 's_key'}||-1|||m||0||0||${method}|||m||0||1||{}`}
+=======
+	//https://maganza.ru/fsnew/vk/htdocs/index.php?m=|||uid||10541666|||s_key||-1|||m||0||0||user.init|||m||0||1||{}
+	return {m: `|||uid||${data.uid}|||s_key||${data.s_key || -1}|||m||0||0||${method}|||m||0||1||{}`}
+>>>>>>> ef2eb05e72335df39ad1c5f8a5cd26f4ba474a6b
 
 	// data.method 	= method;
 	// data.format 	= DataLoader.RESPONSE_DATA_FORMAT;			
