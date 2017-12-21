@@ -5,7 +5,7 @@ module.exports = function(grunt) {
 			main: {
 				options: {
 					browserifyOptions: {
-						debug: true
+						debug: false
 					},
 					transform: [['babelify', {presets: ["es2015"]} ]] //{presets: ["stage-1", "es2015"]}
 				},
