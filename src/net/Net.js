@@ -18,17 +18,16 @@ export default class Net {
 		while (match = search.exec(query))
 			urlParams[decode(match[1])] = decode(match[2]);
 
-		this.params = urlParams;
 		this.social = (function () {
-			if (this.params.api_url.indexOf('vk.com') > -1)
+			if (urlParams.api_url.indexOf('vk.com') > -1)
 				return new VK(urlParams);
-			else if (this.params.api_url.indexOf('ok.ru') > -1)
+			else if (urlParams.api_url.indexOf('ok.ru') > -1)
 				return new OK(urlParams);
 			else
 				return null;
 		})();
 
-		console.log(this.params);
+		console.log(urlParams);
 	}
 
 	init(oGameData) {
