@@ -2,8 +2,6 @@ import { DataLoader } from './DataLoader'
 import { VK } from './social/vk';
 import { OK } from './social/ok';
 
-export const PARAMS = this.params;
-
 export default class Net {
 	//-----------------------/ Функции /---------------------------------------
 	constructor() {
@@ -23,9 +21,9 @@ export default class Net {
 		this.params = urlParams;
 		this.social = (function () {
 			if (this.params.api_url.indexOf('vk.com') > -1)
-				return new VK();
+				return new VK(urlParams);
 			else if (this.params.api_url.indexOf('ok.ru') > -1)
-				return new OK();
+				return new OK(urlParams);
 			else
 				return null;
 		})();
