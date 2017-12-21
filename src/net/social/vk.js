@@ -15,8 +15,7 @@ import { SocialAPI } from './socialApi';
 
 export class VK extends SocialAPI{
     constructor(access_token){
-        super(access_token);
-        super.url = 'https://api.vk.com/method';
+        super(access_token, 'https://api.vk.com/method');
     }
 
     getFriends() {

@@ -1,8 +1,8 @@
 import axios from 'axios';
 
 export class SocialAPI {
-    constructor(access_token) {
-        this.url = '';
+    constructor(access_token, url) {
+        this.url = url;
         this.access_token = access_token;
     }
 
