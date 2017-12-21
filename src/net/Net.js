@@ -19,6 +19,9 @@ export default class Net {
 			urlParams[decode(match[1])] = decode(match[2]);
 
 		this.social = (function () {
+			if(!urlParams || !urlParams.api_url)
+				return null;
+
 			if (urlParams.api_url.indexOf('vk.com') > -1)
 				return new VK(urlParams.access_token);
 			else if (urlParams.api_url.indexOf('ok.ru') > -1)
@@ -67,7 +70,7 @@ export default class Net {
 			})
 			.then(resp => {
 				data.user = resp.data;
-				return this.social.getFriends();
+				return this.social ? this.social.getFriends() : Promise.resolve({});
 			})
 			.then(resp => {
 				data.social.friends = resp.data;

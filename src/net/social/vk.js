@@ -16,6 +16,12 @@ import { SocialAPI } from './socialApi';
 export class VK extends SocialAPI{
     constructor(access_token){
         super(access_token, 'https://api.vk.com/method');
+
+        VK.init(function() {
+            console.log('init compl');
+            }, function() { 
+            
+        }, '5.69'); 
     }
 
     getFriends() {
