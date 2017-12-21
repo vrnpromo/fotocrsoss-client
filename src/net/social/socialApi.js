@@ -1,3 +1,5 @@
+import axios from 'axios';
+
 export class SocialAPI {
     constructor(access_token) {
         this.url = '';
