@@ -20,9 +20,9 @@ export default class Net {
 
 		this.social = (function () {
 			if (urlParams.api_url.indexOf('vk.com') > -1)
-				return new VK(urlParams);
+				return new VK(urlParams.access_token);
 			else if (urlParams.api_url.indexOf('ok.ru') > -1)
-				return new OK(urlParams);
+				return new OK(urlParams.access_token);
 			else
 				return null;
 		})();
