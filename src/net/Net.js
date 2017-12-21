@@ -1,4 +1,8 @@
 import { DataLoader } from './DataLoader'
+import { VK } from './social/vk';
+import { OK } from './social/ok';
+
+export const PARAMS = this.params;
 
 export default class Net {
 	//-----------------------/ Функции /---------------------------------------
@@ -7,16 +11,25 @@ export default class Net {
 		//parse query string
 		var urlParams;
 		var match,
-			pl     = /\+/g,  // Regex for replacing addition symbol with a space
+			pl = /\+/g,  // Regex for replacing addition symbol with a space
 			search = /([^&=]+)=?([^&]*)/g,
 			decode = function (s) { return decodeURIComponent(s.replace(pl, " ")); },
-			query  = window.location.search.substring(1);
-	
+			query = window.location.search.substring(1);
+
 		urlParams = {};
 		while (match = search.exec(query))
 			urlParams[decode(match[1])] = decode(match[2]);
-		
+
 		this.params = urlParams;
+		this.social = (function () {
+			if (this.params.api_url.indexOf('vk.com') > -1)
+				return new VK();
+			else if (this.params.api_url.indexOf('ok.ru') > -1)
+				return new OK();
+			else
+				return null;
+		})();
+
 		console.log(this.params);
 	}
 
@@ -47,16 +60,20 @@ export default class Net {
 			.catch(error);
 	}
 
-	firstLoad(callback, error = null){
-		let data ={};
+	firstLoad(callback, error = null) {
+		let data = { social: {} };
 
 		this.oDataLoader.request_obf('general.get_data', {})
-			.then(resp=>{
+			.then(resp => {
 				data.general = resp.data;
-				return this.oDataLoader.request_obf('user.init', {uid: 10541666});
+				return this.oDataLoader.request_obf('user.init', { uid: 10541666 });
 			})
 			.then(resp => {
 				data.user = resp.data;
+				return this.social.getFriends();
+			})
+			.then(resp => {
+				data.social.friends = resp.data;
 				callback(data);
 			})
 			.catch(error);
