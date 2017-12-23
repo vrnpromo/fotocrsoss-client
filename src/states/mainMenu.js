@@ -54,7 +54,7 @@ export default function() {
 
 			function updateGUI(){
 				stages.fill(App.storage.generalData);
-				friends.fill(App.storage.friends);
+				friends.fill(App.storage.social.friends);
 				moneyBtn.setMoney(App.storage.userData ? App.storage.userData.user.money1:'0');
 			}
 
