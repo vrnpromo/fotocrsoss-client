@@ -2,6 +2,8 @@ import { DataLoader } from './DataLoader'
 import { VKApi } from './social/vk';
 import { OK } from './social/ok';
 
+let social;
+
 export default class Net {
 	//-----------------------/ Функции /---------------------------------------
 	constructor() {
@@ -18,7 +20,7 @@ export default class Net {
 		while (match = search.exec(query))
 			urlParams[decode(match[1])] = decode(match[2]);
 
-		this.social = (function () {
+		social = (function () {
 			if(!urlParams || !urlParams.api_url)
 				return null;
 
@@ -60,6 +62,10 @@ export default class Net {
 			.catch(error);
 	}
 
+	showInviteFriendsBox(){
+		social.showInviteFriendsBox();
+	}
+
 	firstLoad(callback, error = null) {
 		let data = { social: {} };
 
@@ -70,7 +76,7 @@ export default class Net {
 			})
 			.then(resp => {
 				data.user = resp.data;
-				return this.social ? this.social.getFriends() : Promise.resolve({});
+				return social ? social.getFriends() : Promise.resolve({});
 			})
 			.then(resp => {
 				data.social.friends = resp;

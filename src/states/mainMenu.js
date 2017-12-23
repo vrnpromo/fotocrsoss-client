@@ -6,6 +6,7 @@ import { StagesList } from "../gui/stagesList";
 import { ImgBtn } from "../gui/imgBtn";
 import { MoneyBtn } from "../gui/moneyBtn";
 import { GameFaq } from "../fotoCross/gameFaq";
+import { FriendsList } from "../gui/friendsList";
 
 export default function() {
 	return{
@@ -15,10 +16,13 @@ export default function() {
 		create:()=>{
 			App.phaser.add.sprite(0, 0, 'bg');
 
-			let stages = new StagesList();
-			
+			let stages = new StagesList();			
 			stages.graph.x = 70;
 			stages.graph.y = 200;
+
+			let friends = new FriendsList();
+			friends.graph.x = 160;
+			friends.graph.y = 470;
 
 			// App.storage.onGeneralData.addOnce((data)=> {
 			// 	updateGUI();
@@ -50,6 +54,7 @@ export default function() {
 
 			function updateGUI(){
 				stages.fill(App.storage.generalData);
+				friends.fill(App.storage.friends);
 				moneyBtn.setMoney(App.storage.userData ? App.storage.userData.user.money1:'0');
 			}
 

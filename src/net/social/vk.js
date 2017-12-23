@@ -11,24 +11,30 @@
 //     });
 // }
 
-export class VKApi{
-    constructor(access_token){
+export class VKApi {
+    constructor(access_token) {
         //super(access_token, 'https://api.vk.com/method');
 
-        VK.init(function() {
-            console.log('init compl');
-            }, function() { 
-            
-        }, '5.69'); 
+        VK.init(function () {
+                console.log('vk.init');
+            },
+            function () {
+
+            },
+            '5.69');
     }
 
     getFriends() {
         //https://api.vk.com/method/METHOD_NAME?PARAMETERS&access_token=ACCESS_TOKEN&v=V 
         //this.call('friends.get', { fields: 'nickname,photo_100' });
-       
 
-        return new Promise(function(resolve, reject) {
-            VK.api('friends.get', { fields: 'nickname,photo_100' }, resolve);
+
+        return new Promise(function (resolve, reject) {
+            VK.api('friends.get', { fields: 'nickname,photo_100' }, (resp) => { return resolve(resp.responce) });
         });
+    }
+
+    showInviteFriendsBox(){
+        VK.callMethod('showInviteBox');
     }
 }
