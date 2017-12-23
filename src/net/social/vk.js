@@ -13,9 +13,9 @@ import { SocialAPI } from './socialApi';
 //     });
 // }
 
-export class VK extends SocialAPI{
+export class VK{
     constructor(access_token){
-        super(access_token, 'https://api.vk.com/method');
+        //super(access_token, 'https://api.vk.com/method');
 
         VK.init(function() {
             console.log('init compl');
@@ -26,6 +26,11 @@ export class VK extends SocialAPI{
 
     getFriends() {
         //https://api.vk.com/method/METHOD_NAME?PARAMETERS&access_token=ACCESS_TOKEN&v=V 
-        this.call('friends.get', { fields: 'nickname,photo_100' });
+        //this.call('friends.get', { fields: 'nickname,photo_100' });
+       
+
+        return new Promise(function(resolve, reject) {
+            VK.api('friends.get', { fields: 'nickname,photo_100' }, resolve);
+        });
     }
 }

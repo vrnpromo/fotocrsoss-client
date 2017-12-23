@@ -73,7 +73,7 @@ export default class Net {
 				return this.social ? this.social.getFriends() : Promise.resolve({});
 			})
 			.then(resp => {
-				data.social.friends = resp.data;
+				data.social.friends = resp;
 				callback(data);
 			})
 			.catch(error);
