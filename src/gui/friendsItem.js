@@ -6,6 +6,8 @@ export class FriendItem {
         let group = App.phaser.add.group();
 
         if (data) {
+            this.fid = data.id;
+
             let imgData = App.assetService.get('img_friend_element_back');
             let bg = App.phaser.add.image(0, 0, imgData.atlas, imgData.key);
             group.add(bg);
@@ -15,14 +17,15 @@ export class FriendItem {
                 this.name.width = bg.width - 4;
             this.name.x = (bg.width >> 1) - (this.name.width >> 1);
 
-            let imgKey = `social_friend_${data.id}`;
-            App.phaser.load.image(imgKey, data.img);
-            App.phaser.load.onLoadComplete.addOnce(() => {
-                let img = App.phaser.add.image(0, 0, imgKey);
+            let onComplete = function(){
+                let img = App.phaser.add.image(0, 0, `social_friend_${this.fid}`);
                 img.x = (bg.width >> 1) - (img.width >> 1);
                 img.y = (bg.height >> 1) - (img.height >> 1);
                 group.add(img);
-            }, this);
+            }; 
+    
+            App.phaser.load.image(`social_friend_${data.id}`, data.img);
+            App.phaser.load.onLoadComplete.addOnce(onComplete.bind(this), this);
             App.phaser.load.start();
 
         } else {

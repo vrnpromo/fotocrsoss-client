@@ -62,23 +62,22 @@ export class FriendsList {
             this.friends.add(fi.graph);
         });
 
-        if (data.count < this.size) {
-            let n = this.size - data.count;
-            let last = this.friends.children[this.friends.children.length - 1];
-            let sx = this.friends.children.length > 0 ? last.x + last.width + this.space: 0;
-            //пустые ячейки для друзей, вывожу хотя бы 1 в конце.
-            for (let i = 0; i < (n > 0 ? n : 1); i++) {
-                let f = new FriendItem();
+        
+        let n = this.size - data.count;
+        let last = this.friends.children[this.friends.children.length - 1];
+        let sx = this.friends.children.length > 0 ? last.x + last.width + this.space: 0;
+        //пустые ячейки для друзей, вывожу хотя бы 1 в конце.
+        for (let i = 0; i < (n > 0 ? n : 1); i++) {
+            let f = new FriendItem();
 
-                f.graph.x = sx + i * (f.graph.width + this.space);
-                f.graph.y = 0;
+            f.graph.x = sx + i * (f.graph.width + this.space);
+            f.graph.y = 0;
 
-                this.friends.add(f.graph);
+            this.friends.add(f.graph);
 
-                f.graph.onChildInputDown.add((target) => {
-                    App.net.showInviteFriendsBox();
-                });
-            }
+            f.graph.onChildInputDown.add((target) => {
+                App.net.showInviteFriendsBox();
+            });
         }
 
         mask.beginFill(0xffffff);
