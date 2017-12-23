@@ -1,5 +1,5 @@
 import { DataLoader } from './DataLoader'
-import { VK } from './social/vk';
+import { VKApi } from './social/vk';
 import { OK } from './social/ok';
 
 export default class Net {
@@ -23,7 +23,7 @@ export default class Net {
 				return null;
 
 			if (urlParams.api_url.indexOf('vk.com') > -1)
-				return new VK(urlParams.access_token);
+				return new VKApi(urlParams.access_token);
 			else if (urlParams.api_url.indexOf('ok.ru') > -1)
 				return new OK(urlParams.access_token);
 			else

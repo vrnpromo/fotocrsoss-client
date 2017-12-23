@@ -1,5 +1,3 @@
-import { SocialAPI } from './socialApi';
-
 // function call(method, params = null) {
 //     if(params){
 //         params.access_token = PARAMS.access_token;
@@ -13,7 +11,7 @@ import { SocialAPI } from './socialApi';
 //     });
 // }
 
-export class VK{
+export class VKApi{
     constructor(access_token){
         //super(access_token, 'https://api.vk.com/method');
 
