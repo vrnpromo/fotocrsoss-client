@@ -2,7 +2,7 @@ import { ImgBtn } from "./imgBtn";
 import { App } from "../app";
 
 export class FriendItem {
-    constructor(isEmpty = false) {
+    constructor(data = null) {
         let group = App.phaser.add.group();
         //group.inputEnableChildren = true;
 
@@ -12,7 +12,7 @@ export class FriendItem {
         // graphics.drawRect(0, 0, width, height);
         // graphics.endFill();
         // group.add(graphics);
-        
+
 
         if (isEmpty) {
             let btn = new ImgBtn('btn_invite_friends2_normal', 'btn_invite_friends2_over');
@@ -22,9 +22,16 @@ export class FriendItem {
             btn.graph.input.useHandCursor = true;
 
             group.add(btn.graph);
-        }else{
+        } else {
             let imgData = App.assetService.get('img_friend_element_back');
             group.create(0, 0, imgData.atlas, imgData.key);
+
+            let imgKey = `social_friend_${data.id}`
+            App.phaser.load.image(imgKey, data.photo_100);
+            App.phaser.load.onLoadComplete.addOnce(()=> {
+				App.phaser.add.image(10,10, imgKey);
+			}, this);			
+			App.phaser.load.start();
         }
         //this.lvlMissionCount = App.phaser.add.text(0, 140, '0 / 40', { font: "24px Arial", fill: "#000000", align: "center" }, group);
         //this.lvlMissionCount.x = (this.width >> 1) - (this.lvlMissionCount.width>>1);
