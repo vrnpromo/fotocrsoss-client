@@ -29,6 +29,7 @@ function create() {
     App.net.firstLoad(resp => {
         App.storage.generalData = resp.general[0][1];
         App.storage.userData = resp.user[0][1];
+        App.storage.social = resp.social;
         //App.storage.onGeneralData.dispatch(App.storage.generalData);
 
         App.phaser.state.start('mainMenu');
