@@ -50,6 +50,7 @@ export class FriendsList {
 
         data['items'].forEach((f, i) => {
             let fi = new FriendItem({
+                id: f.id,
                 nickname: f.nickname,
                 first_name: f.first_name,
                 last_name: f.last_name,
