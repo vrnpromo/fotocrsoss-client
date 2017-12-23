@@ -30,7 +30,7 @@ export class VKApi {
 
 
         return new Promise(function (resolve, reject) {
-            VK.api('friends.get', { fields: 'nickname,photo_100' }, (resp) => { return resolve(resp.response) });
+            VK.api('friends.get', { fields: 'nickname,photo_50' }, (resp) => { return resolve(resp.response) });
         });
     }
 

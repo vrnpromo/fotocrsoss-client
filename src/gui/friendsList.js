@@ -38,7 +38,7 @@ export class FriendsList {
     }
 
     fill(data) {
-        if (!data)
+        if (!data.count)
             data = {
                 count: 0,
                 items: []
@@ -49,7 +49,12 @@ export class FriendsList {
         this.friends.y = 60;
 
         data['items'].forEach((f, i) => {
-            let fi = new FriendItem(f);
+            let fi = new FriendItem({
+                nickname: f.nickname,
+                first_name: f.first_name,
+                last_name: f.last_name,
+                img: f.photo_50
+            });
 
             fi.graph.x = i * (fi.graph.width + this.space);
             fi.graph.y = 0;
@@ -59,7 +64,8 @@ export class FriendsList {
 
         if (data.count < this.size) {
             let n = this.size - data.count;
-            let sx = this.friends.children.length > 0 ? this.friends.children[this.friends.children.length - 1].x : 0;
+            let last = this.friends.children[this.friends.children.length - 1];
+            let sx = this.friends.children.length > 0 ? last.x + last.width + this.space: 0;
             //пустые ячейки для друзей, вывожу хотя бы 1 в конце.
             for (let i = 0; i < (n > 0 ? n : 1); i++) {
                 let f = new FriendItem();
