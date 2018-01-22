@@ -1,0 +1,8 @@
+{
+    "boosters": {
+        "type0": "ОТКРЫТЬ БУКВУ",
+        "type1": "УБРАТЬ БУКВУ",
+        "type2": "СПРОСИТЬ ДРУЗЕЙ"
+    },
+    "tutorial": ["img_tutorial_1.png", "img_tutorial_1.png", "img_tutorial_1.png"]
+}

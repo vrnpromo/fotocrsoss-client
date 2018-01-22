@@ -20,12 +20,17 @@ export class AssetService{
         App.phaser.load.image('tut_bg', './data/tutorial/bg.png');
         
         App.phaser.load.atlasXML('assets', './data/sprites.png', './data/sprites.xml');
-        App.phaser.load.json('tutorial', './data/tutorial.json');
+        App.phaser.load.json('gdata', './data/gdata.json');
 
         return instance;
     }
 
     get(name){
         return {atlas:'assets', key: `${name}.png`};
+    }
+
+    // json with helpfull info (boosters names, tutorial imgs, etc.)
+    getJson(){
+       return App.phaser.cache.getJSON('gdata'); 
     }
 }

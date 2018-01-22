@@ -6,7 +6,7 @@ import { DataLoader } from '../net/DataLoader';
 import { ImgBtn } from '../gui/imgBtn';
 import { MoneyBtn } from '../gui/moneyBtn';
 import { GameFaq } from '../fotoCross/gameFaq';
-import { OpenLetter } from '../gui/boosters/openLetter';
+import { Booster } from '../gui/boosters/booster';
 
 let crossword;
 let cluePhoto;
@@ -28,14 +28,14 @@ function backToMenu(){
 function renderBoosters(){
 	let cont = App.phaser.add.group();
 
-	let openLetter = new OpenLetter();
+	let openLetter = new Booster('type0');
 	cont.add(openLetter.graph);
 
-	let removeLetter = new OpenLetter();
+	let removeLetter = new Booster('type1');
 	removeLetter.graph.x = openLetter.graph.width + 8;
 	cont.add(removeLetter.graph);
 
-	let askFriend = new OpenLetter();
+	let askFriend = new Booster('type2');
 	askFriend.graph.x = removeLetter.graph.x + removeLetter.graph.width + 8;
 	cont.add(askFriend.graph);
 
@@ -205,7 +205,8 @@ function parseLevel(){
 
 export default function gameState() {	
 	return {
-		preload: function () {		
+		preload: function () {	
+			App.phaser.add.sprite(0, 0, 'bg');	
 			//gui
 			//phaser.load.image('gui_game_btn', './data/ButtonsNormal.png');
 			let mission_stat = App.storage.generalData['mission_stat'].find( m => m.id == App.storage.missionId);
@@ -213,9 +214,7 @@ export default function gameState() {
 			//App.phaser.load.xml('level', './data/levels/901.xml', false);
 			App.phaser.load.xml('level', `${DataLoader.SERVER_LEVELS_URL}/${mission_stat.path}`, false);
 		},
-		create: function(){
-			App.phaser.add.sprite(0, 0, 'bg');
-			
+		create: function(){			
 			cluePhoto = App.factory.photo(750 - 304, 70);		
 			
 			renderBoosters();

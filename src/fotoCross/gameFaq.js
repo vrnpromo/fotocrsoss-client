@@ -66,10 +66,10 @@ export class GameFaq {
         }
 
         let imgs = [];
-        var json = App.phaser.cache.getJSON('tutorial');
+        var json = App.assetService.getJson();
         
         if (App.phaser.cache.checkImageKey('tutorial_0')) {
-            json.imgs.forEach((img, i) => {
+            json.tutorial.forEach((img, i) => {
                 imgs.push(`tutorial_${i}`);
             });
 
@@ -79,7 +79,7 @@ export class GameFaq {
                 render();
             }, this);
 
-            json.imgs.forEach((img, i) => {
+            json.tutorial.forEach((img, i) => {
                 App.phaser.load.image(`tutorial_${i}`, './data/tutorial/' + img);
                 imgs.push(`tutorial_${i}`);
             });
