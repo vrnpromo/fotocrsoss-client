@@ -21,13 +21,13 @@ export default class Net {
 			urlParams[decode(match[1])] = decode(match[2]);
 
 		social = (function () {
-			if(!urlParams || !urlParams.api_url)
+			if(!urlParams || !urlParams.api_url || !urlParams.api_server)
 				return null;
 
 			if (urlParams.api_url.indexOf('vk.com') > -1)
 				return new VKApi(urlParams.access_token);
-			else if (urlParams.api_url.indexOf('ok.ru') > -1)
-				return new OK(urlParams.access_token);
+			else if (urlParams.api_server.indexOf('ok.ru') > -1)
+				return new OK();
 			else
 				return null;
 		})();
