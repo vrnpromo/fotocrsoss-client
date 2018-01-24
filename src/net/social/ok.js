@@ -21,11 +21,11 @@ export class OK {
     }
     getFriends(){
         return new Promise(function (resolve, reject) {
-            FAPI.Client.call({"method":"friends.getAppUsers"}, (resp) => { 
-                FAPI.Client.call({"method":"users.getInfo", "fields":"name,pic50x50,first_name,last_name", "uids":resp.uids.join(',')}, (r)=>{
+            FAPI.Client.call({"method":"friends.getAppUsers"}, (res1, data1) => { 
+                FAPI.Client.call({"method":"users.getInfo", "fields":"name,pic50x50,first_name,last_name", "uids":data1.uids.join(',')}, (res2, data2)=>{
                     return resolve({
-                        count: r.length, 
-                        items:r.map(i => ({
+                        count: data2.length, 
+                        items:data2.map(i => ({
                             id:i.id,
                             nickname: i.name, 
                             photo_50:i.pic50x50,
