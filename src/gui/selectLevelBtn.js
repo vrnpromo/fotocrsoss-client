@@ -18,9 +18,11 @@ export class SelectLevelBtn{
         let imgData = App.assetService.get('img_category_back');
         group.create(0, 0, imgData.atlas, imgData.key);
 
+
+
         let btn = new ImgBtn('btn_play_normal', 'btn_play_over');
         btn.graph.x = 8;
-        btn.graph.y = this.height - 60;     
+        btn.graph.y = this.height - 60;
 
         group.add(btn.graph);
 

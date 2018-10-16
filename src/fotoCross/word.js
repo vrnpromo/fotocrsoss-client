@@ -15,7 +15,7 @@ export default class Word{
     }
 
     render(){
-        let cont = App.phaser.add.group();      
+        let cont = App.phaser.add.group();
         let length = this.text.length - 1;
 
         for(let i = 0; i < this.text.length; i++){
@@ -68,16 +68,16 @@ export default class Word{
     }
 
     isFilled(){
-        return this.textArr.join('').length == this.text.length;
+        return this.textArr.join('').length === this.text.length;
     }
 
     isCorrect(){
-        return this.text == this.textArr.join('');
+        return this.text === this.textArr.join('');
     }
 
     setState(state){
-		this.graph.children.forEach(letter => {
+        this.graph.children.forEach(letter => {
             letter.data.instance.setState(state);
         });
-	}
+    }
 }

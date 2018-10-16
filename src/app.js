@@ -31,6 +31,22 @@ function create() {
         App.storage.userData = resp.user[0][1];
         App.storage.social = resp.social;
         //App.storage.onGeneralData.dispatch(App.storage.generalData);
+        // дефолтные сохранения, если нет загруженных
+        App.storage.storageData = {
+            storage: {
+                data: {
+                    stages: {
+                        '1': {
+                            stageDynamicId: 0,
+                            missionId: '1',
+                            finishedWords: [1, 2, 3, 4, 5, 6],
+                            selected: 7
+                        }
+                    }
+                }
+            }
+        };
+        console.log(App.storage);
 
         App.phaser.state.start('mainMenu');
     });
